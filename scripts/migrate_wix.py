@@ -4,7 +4,7 @@
 For every episode whose Firstory description links to the old site, this opens
 that old page, finds the illustrations in it, downloads the original files
 from Wix and saves them as  podcast插畫/<EP folder>/01.jpg, 02.jpg, ...
-(resized so the longest side is at most 2400px, to keep the repository small).
+(resized so the longest side is at most 1500px, to keep the repository small).
 
 Usage:
   python3 scripts/migrate_wix.py --limit 3        # test with the 3 newest episodes
@@ -29,7 +29,7 @@ from build import fetch_rss, parse_rss, load_json, ROOT, POD_SRC  # noqa: E402
 OLD_SITE = "https://www.pocapocastoryvillage.com"
 MEDIA = re.compile(r"7c6412_[0-9a-f]{32}(?:~mv2)?\.(?:jpg|jpeg|png|gif)", re.I)
 UA = {"User-Agent": "Mozilla/5.0 (pocapoca-migration)"}
-MAX_SIDE = 2400
+MAX_SIDE = 1500
 
 
 def get(url, tries=3):
