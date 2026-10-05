@@ -1,0 +1,35 @@
+name: 搬移 Wix 插畫 (Migrate Wix illustrations)
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "幾集？（0 = 全部）"
+        default: "3"
+      only:
+        description: "只搬這幾集，例如 EP184,EP90（可留空）"
+        default: ""
+permissions:
+  contents: write
+  actions: write
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+      - run: python3 scripts/migrate_wix.py --limit "${{ inputs.limit }}" --only "${{ inputs.only }}"
+      - name: Save the illustrations to the repository
+        run: |
+          git config user.name "pocapoca-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "podcast插畫" data/wix-migration-report.md
+          git commit -m "從 Wix 搬移 Podcast 插畫" || echo "Nothing new"
+          git push
+      - name: Rebuild the website
+        run: gh workflow run deploy.yml
+        env:
+          GH_TOKEN: ${{ github.token }}
