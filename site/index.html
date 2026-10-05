@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pocapoca 故事村 Pocapoca Story Village</title>
+<meta name="description" content="繪本／插畫工作者 Poca（鄭夙雅）的作品網站：繪本、插畫、動畫，以及 Podcast「Poca村長的故事時間」。">
+<meta property="og:title" content="Pocapoca 故事村 Pocapoca Story Village">
+<meta property="og:description" content="繪本／插畫工作者 Poca 的作品與 Podcast「Poca村長的故事時間」。">
+<meta property="og:image" content="img/map-hd.webp">
+<link rel="icon" href="img/bird.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: the old Pocapoca village, rebuilt — a watercolor sea fills the page; the island map is the front gate;
+   a ribbon leads ashore to a yellow sky header, a ribbon menu, and a pale paper panel holding each page. */
+@font-face{font-family:"Amatic";src:url(fonts/amatic-bold.woff) format("woff");font-weight:400 700;font-display:swap;ascent-override:86%;descent-override:14%;line-gap-override:0%}
+:root{
+  --sea:#4f86ab;          /* watercolor sea (WEB背景) */
+  --panel:#f2f4f3;        /* pale paper panel */
+  --panel-2:#e7ebe8;
+  --sky:#f7f0a9;          /* yellow sky header */
+  --ribbon:#776d66;       /* grey-brown ribbon */
+  --ribbon-fold:#57332d;  /* dark fold under the ribbon */
+  --ribbon-tail:#8b817a;
+  --ink:#4b463e;
+  --ink-soft:#7b746a;
+  --teal:#3e7a7d;         /* section titles */
+  --cream:#f6f1e4;
+  --ground:#c8aa52;       /* mustard ground under the passers-by */
+  --line:#cfd5d1;
+  --en:"Amatic","Amatic SC","Avenir Next Condensed",sans-serif;
+  --zh:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --step-0:clamp(.95rem,.92rem + .15vw,1.03rem);
+  --step-1:clamp(1.12rem,1.04rem + .35vw,1.3rem);
+  --step-2:clamp(1.45rem,1.25rem + .8vw,1.9rem);
+  --en-1:clamp(1.7rem,1.4rem + 1.2vw,2.4rem);
+  --en-2:clamp(2.4rem,1.8rem + 2.6vw,4.2rem);
+  --gutter:clamp(16px,3.5vw,40px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--sea) url(img/texture.jpg) center top/1600px auto repeat;background-attachment:fixed;color:var(--ink);font-family:var(--zh);font-size:var(--step-0);line-height:1.8}
+img,video{max-width:100%;height:auto;display:block}
+a{color:var(--teal);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;line-height:1.25;text-wrap:balance;font-weight:500}
+.en{font-family:var(--en);font-weight:700;letter-spacing:.02em;line-height:1}
+button{font:inherit;color:inherit}
+
+/* ---------- ribbon (drawn as SVG) ---------- */
+.ribbon{position:relative;display:inline-grid;place-items:center;text-decoration:none;color:var(--cream);isolation:isolate;cursor:pointer;border:0;background:none;padding:0}
+.ribbon > svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1;overflow:visible}
+.ribbon .r-band{fill:var(--ribbon)}
+.ribbon .r-tail{fill:var(--ribbon-tail)}
+.ribbon .r-fold{fill:var(--ribbon-fold)}
+.ribbon .r-stitch{fill:none;stroke:var(--cream);stroke-opacity:.35;stroke-width:1.2;stroke-dasharray:5 4}
+.go{display:grid;place-items:center;padding:0 1.5em;height:2.3em;line-height:1;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.4rem);white-space:nowrap;cursor:default}
+.go span{display:block}
+.gate .go{margin-top:-30px}
+.go:hover{transform:translateY(-3px) rotate(-1deg)}
+
+/* ---------- landing ---------- */
+.gate{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;padding-inline:var(--gutter);overflow:hidden}
+.mapwrap{position:absolute;right:0;bottom:0;width:min(76vw,calc(100svh * 1.3373));aspect-ratio:3350/2505}
+.mapwrap .map{width:100%;height:100%;display:block}
+.mapwrap .eboat{position:absolute;width:13%;left:6%;top:68%;animation:bob 5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.gate .flight{position:relative;z-index:2;display:grid;justify-items:start;gap:18px;padding-block:clamp(60px,12vh,140px) 40px;width:max-content;max-width:100%;margin-left:0}
+.gate .bird-row{display:flex;align-items:center;gap:clamp(8px,2vw,24px)}
+.gate .bird{width:clamp(200px,24vw,340px);animation:fly 6s ease-in-out infinite}
+.bubbles{display:grid;gap:12px}
+.bubble-btn{width:clamp(90px,9vw,120px);aspect-ratio:1231/1090;background:url(img/bubble-white.png) center/contain no-repeat;border:0;cursor:pointer;display:grid;place-items:center;padding:0 0 10% 12%;font-size:clamp(1.25rem,1rem + .7vw,1.75rem);color:var(--ribbon);transition:transform .2s}
+.bubble-btn.zh{font-family:var(--zh);font-weight:500}
+.bubble-btn.en-b{font-family:var(--en);font-weight:700;font-size:clamp(1.8rem,1.4rem + 1vw,2.5rem);background:none;position:relative;isolation:isolate}
+.bubble-btn.en-b{padding:14% 0 0 8%}
+.bubble-btn.en-b::before{content:"";position:absolute;inset:0;background:url(img/bubble-white.png) center/contain no-repeat;transform:rotate(30deg);z-index:-1}
+.bubble-btn:hover{transform:scale(1.06)}
+
+@keyframes fly{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+@keyframes drift{0%,100%{transform:translate(0,0) rotate(-3deg)}50%{transform:translate(12px,-16px) rotate(3deg)}}
+@keyframes twinkle{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(18deg) scale(1.15)}}
+
+/* ---------- inner frame ---------- */
+.sky{background:var(--sky);text-align:center;position:relative;padding:28px var(--gutter) 46px}
+.sky .title{font-size:var(--en-2);color:var(--ink);text-decoration:none;display:inline-block;position:relative}
+.sky .title small{display:block;font-family:var(--zh);font-weight:500;font-size:clamp(.95rem,.85rem + .3vw,1.1rem);letter-spacing:.3em;margin-top:.5em;color:var(--ink-soft)}
+.sky .s-balloon{position:absolute;width:clamp(28px,3vw,40px);right:clamp(16px,20vw,300px);top:20px;animation:drift 8s ease-in-out infinite}
+.sky .s-star{position:absolute;width:clamp(22px,2.4vw,32px);left:-1.4em;bottom:.2em;animation:twinkle 4s ease-in-out infinite}
+.sky .s-bird{width:clamp(150px,17vw,230px);margin:4px auto 0}
+.sky .welcome{display:flex;align-items:center;justify-content:center;gap:18px;margin:-6px 0 0;color:var(--ink);font-size:clamp(2.2rem,1.6rem + 2vw,3.4rem)}
+.sky .welcome::before,.sky .welcome::after{content:"";width:clamp(40px,12vw,150px);height:8px;background:radial-gradient(circle at 4px 8px,#d9bfa0 4px,transparent 4.5px) 0 0/8px 8px repeat-x}
+.menu{position:relative;z-index:3;margin:-26px auto 0;max-width:min(1060px,calc(100% - 2*var(--gutter) + 40px));padding-inline:28px}
+.menu .ribbon{display:flex;align-items:center;width:100%;padding:0 26px;height:clamp(62px,5.6vw,76px)}
+
+.menu nav{display:flex;flex-wrap:wrap;justify-content:space-evenly;align-items:center;gap:2px 10px;width:100%}
+.menu a,.menu .lang{font-family:var(--en);font-weight:700;font-size:clamp(1.35rem,1.1rem + .8vw,1.75rem);color:var(--cream);text-decoration:none;line-height:1;padding:4px;border:0;background:none;cursor:pointer}
+.menu a:hover,.menu .lang:hover{color:var(--sky)}
+.menu a[aria-current="page"]{color:#e8a49a}
+.sky .langsw{position:absolute;right:max(var(--gutter),calc((100% - 1060px)/2));bottom:40px;z-index:4}
+.langsw{display:inline-flex;align-items:center;gap:2px;background:var(--ribbon);border-radius:999px;padding:4px;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.langsw svg{width:18px;height:18px;fill:none;stroke:var(--cream);stroke-width:1.6;margin:0 4px 0 6px;flex:none}
+.langsw button{font-family:var(--zh);font-weight:500;font-size:.95rem;line-height:1;color:var(--cream);background:none;border:0;border-radius:999px;padding:6px 10px;cursor:pointer}
+.langsw button.en-opt{font-family:var(--en);font-weight:700;font-size:1.15rem;padding:4px 11px}
+.langsw button[aria-pressed="true"]{background:var(--sky);color:var(--ribbon)}
+.langsw button:not([aria-pressed="true"]):hover{background:rgba(255,255,255,.18)}
+.panel{background:var(--panel);max-width:min(1060px,calc(100% - 2*var(--gutter)));margin:-14px auto 0;padding:clamp(40px,6vw,72px) clamp(16px,5vw,64px) clamp(36px,5vw,64px);position:relative;z-index:1;box-shadow:0 18px 40px rgba(20,40,60,.18)}
+.panel-foot{max-width:min(1060px,calc(100% - 2*var(--gutter)));margin:0 auto clamp(30px,5vw,60px);background:var(--panel-2);padding:28px clamp(16px,5vw,64px) 18px}
+
+/* section titles: English in Amatic + Chinese in Hei, like the old site */
+.stitle{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding-bottom:10px;border-bottom:2px dotted var(--line);margin-bottom:18px;color:var(--teal)}
+.stitle .en{font-size:var(--en-1)}
+.stitle .zh{font-size:var(--step-1);font-weight:500}
+.label{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:12px;background:var(--ribbon);color:var(--cream);padding:6px 20px 8px;box-shadow:4px 4px 0 var(--panel-2)}
+.label .en{font-size:var(--en-1)}
+.label .zh{font-weight:500}
+
+/* ---------- about ---------- */
+.intro-m{display:none}
+.notice{position:relative;padding-bottom:clamp(30px,5vw,60px)}
+.scene{position:relative;max-width:900px;margin:0 auto;padding-bottom:4cqw;container-type:inline-size}
+.board{position:relative;width:88%;aspect-ratio:985/676;margin:0 auto;background:url(img/board.png) center/100% 100% no-repeat;padding:7.5% 8% 0;container-type:inline-size;z-index:1}
+.board .stitle{margin-bottom:3cqi;padding-bottom:1.5cqi}
+.board .stitle .en{font-size:clamp(2.2rem,7.4cqi,3.7rem)}
+.board .stitle .zh{font-size:clamp(1.3rem,4.1cqi,2.2rem);font-weight:700}
+.board p{font-size:var(--step-0);line-height:1.8}
+.board-in{display:block}
+.board-in .mapthumb{border-radius:3px;background:var(--sea) url(img/texture.jpg) center/400px auto}
+.board .lead{font-weight:500;font-size:var(--step-1);line-height:1.6;margin:0 0 .5em}
+.board .lead span{display:block;color:var(--teal)}
+.board p{margin:0}
+.ground{position:absolute;left:0;right:0;bottom:0;height:8cqw;z-index:0}
+.scene .p1,.scene .p2{position:absolute;z-index:2}
+.scene .p1{width:15cqw;left:28%;bottom:3.6cqw}
+.scene .p2{width:25cqw;left:54%;bottom:calc(3.6cqw - 25cqw * 39 / 362)}
+.ground::before{content:"";position:absolute;inset:0;background:var(--ground);border-radius:50% 46% 52% 48%/60% 55% 45% 40%;opacity:.9}
+
+.chief{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,7fr);gap:clamp(20px,4vw,48px);align-items:start;margin-top:clamp(30px,5vw,60px)}
+.chief .photo{border-radius:3px}
+.chief h3{font-size:var(--en-1);color:var(--teal);margin:18px 0 6px}
+.chief p{margin:0;max-width:38em}
+.cv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px) clamp(20px,4vw,48px);margin-top:clamp(32px,5vw,56px)}
+.cv .wide{grid-column:1/-1}
+.cv ul{list-style:none;margin:0;padding:0}
+.cv li{display:grid;grid-template-columns:8.4em minmax(0,1fr);gap:10px;padding:5px 0;font-size:.93em;line-height:1.6}
+.cv time{font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+
+/* ---------- works ---------- */
+.intro{max-width:38em;color:var(--ink-soft);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+.chips a{font-family:var(--en);font-weight:700;font-size:1.35rem;line-height:1.3;text-decoration:none;color:var(--cream);background:var(--ribbon);padding:1px 14px 3px;border-radius:3px}
+.chips a span{font-family:var(--zh);font-size:.9rem;font-weight:400;margin-left:6px}
+.chips a:hover{background:var(--teal)}
+.cat{margin-top:clamp(34px,5vw,60px);scroll-margin-top:20px}
+.group{padding-block:clamp(18px,3vw,30px);border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+.group:last-child{border-bottom:0}
+.group-head{display:flex;gap:4px 14px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.group-head h3{font-size:var(--step-1)}
+.group-head .meta{color:var(--ink-soft);font-size:.9em}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.row .tile{flex:var(--r) 1 calc(var(--r) * 170px);aspect-ratio:var(--r)}
+.row::after{content:"";flex:1000 1 0}
+.masonry{columns:4 200px;column-gap:12px}
+.masonry .tile{margin-bottom:12px;break-inside:avoid;aspect-ratio:var(--r)}
+.tile{position:relative;display:block;width:100%;padding:0;border:0;background:var(--panel-2);cursor:zoom-in;overflow:hidden;border-radius:2px}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.tile:hover img,.tile:hover video{transform:scale(1.03)}
+.tile .cap{position:absolute;left:8px;bottom:8px;max-width:calc(100% - 16px);background:var(--panel);color:var(--ink);font-size:.88rem;line-height:1.35;padding:3px 10px;border-radius:2px;opacity:0;transform:translateY(4px);transition:.2s;text-align:left}
+.tile:hover .cap,.tile:focus-visible .cap{opacity:1;transform:none}
+.play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;background:rgba(246,241,228,.9);display:grid;place-items:center;pointer-events:none}
+.play::after{content:"";border-left:16px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+
+.yt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;background:var(--sky);padding:18px clamp(16px,3vw,26px);margin-top:28px;border-radius:3px}
+.yt img{width:84px}
+.yt h3{font-size:var(--step-1)}
+.vids{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.vids .tile{aspect-ratio:16/9}
+.vids figcaption{margin-top:6px;font-weight:500}
+
+/* ---------- footer ---------- */
+.contacts{display:grid;gap:10px}
+.contact-row .what{display:block;color:var(--ink-soft);font-size:.88em}
+.social{display:flex;gap:12px;flex-wrap:wrap}
+.social a{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--ribbon);color:var(--cream);transition:transform .2s,background .2s}
+.social a:hover{background:var(--teal);transform:translateY(-2px)}
+.social svg{width:22px;height:22px;fill:currentColor}
+/* ---------- podcast ---------- */
+.pod-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:center;margin-bottom:24px}
+.pod-hero img{width:clamp(110px,14vw,170px);border-radius:4px}
+.pod-hero h2{font-size:var(--step-2);margin-bottom:4px}
+.pod-hero p{margin:0 0 10px;color:var(--ink-soft)}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--ribbon);color:var(--cream);text-decoration:none;border:0;border-radius:999px;padding:5px 16px;font-weight:500;cursor:pointer;font-size:.95rem}
+.btn svg{width:16px;height:16px;fill:currentColor}
+.btn:hover{background:var(--teal)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ribbon)}
+.btn.ghost:hover{background:var(--panel-2)}
+.pod-tools{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:8px 0 18px}
+.pod-tools .chip{border:1.5px solid var(--ribbon);background:transparent;border-radius:999px;padding:2px 14px;cursor:pointer;font-size:.92rem}
+.pod-tools .chip[aria-pressed="true"]{background:var(--ribbon);color:var(--cream)}
+.pod-tools input{flex:1 1 200px;min-width:0;border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font:inherit;font-size:.95rem;background:#fff;color:var(--ink)}
+.pod-count{color:var(--ink-soft);font-size:.9rem;margin:0 0 10px}
+.eps{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:20px 16px}
+.ep{display:grid;grid-template-rows:auto 1fr;background:#fff;border-radius:3px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+.ep-img{aspect-ratio:1;background:var(--sea) url(img/texture.jpg) center/300px;border:0;padding:0;cursor:zoom-in;display:block;width:100%}
+.ep-img img{width:100%;height:100%;object-fit:cover}
+.ep-img.none{display:grid;place-items:center;cursor:default}
+.ep-img.none img{width:60%;height:auto;object-fit:contain}
+.ep-body{padding:10px 12px 12px;display:grid;gap:4px;align-content:start}
+.ep-body h3{font-size:1rem;line-height:1.45;font-weight:500}
+.ep-meta{font-size:.8rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ep-body p{margin:0;font-size:.86rem;line-height:1.6;color:var(--ink-soft)}
+.ep-body a{font-size:.88rem;font-weight:500;justify-self:start;margin-top:2px}
+.more{display:flex;justify-content:center;margin-top:24px}
+
+.foot{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px 40px}
+.foot h4{margin:0 0 6px;font-family:var(--en);font-weight:700;font-size:1.6rem;color:var(--teal);line-height:1.1}
+.foot h4 span{font-family:var(--zh);font-size:.95rem;font-weight:500;margin-left:6px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.mail{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mail code{font-family:var(--zh);user-select:all;background:var(--panel);padding:1px 8px;border-radius:3px}
+.copy{font-size:.85rem;border:1px solid var(--ink-soft);background:transparent;border-radius:999px;padding:0 10px;cursor:pointer}
+.small{color:var(--ink-soft);font-size:.82rem;text-align:center;margin:20px 0 0}
+
+.pod-hero .btns,.epd-info .btns{display:flex;flex-wrap:wrap;gap:8px}
+.kappa-intro{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,5fr);gap:clamp(16px,3vw,36px);align-items:center;margin:clamp(24px,4vw,44px) 0}
+.kappa-intro img{border-radius:3px}
+.kappa-intro p{margin:0 0 .8em;max-width:36em}
+.chars{margin-bottom:clamp(24px,4vw,44px)}
+.chars-img{display:block;border:0;padding:0;background:none;cursor:zoom-in;max-width:620px;margin:0 auto}
+.chars-img img{border-radius:3px}
+.ep-open{display:grid;grid-template-rows:auto 1fr;width:100%;height:100%;border:0;padding:0;background:#fff;text-align:left;cursor:pointer;color:inherit}
+.ep-open .ep-img{position:relative;display:block}
+.ep-play{position:absolute;right:10px;bottom:10px;width:40px;height:40px;border-radius:50%;background:rgba(246,241,228,.92);display:grid;place-items:center;transition:transform .2s}
+.ep-play::after{content:"";border-left:13px solid var(--ribbon);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.ep-open:hover .ep-play{transform:scale(1.1)}
+.ep-open:hover .ep-title{color:var(--teal)}
+.ep-body{display:grid;gap:4px;align-content:start;padding:10px 12px 12px}
+.ep-title{font-size:1rem;line-height:1.45;font-weight:500}
+.ep-desc{font-size:.86rem;line-height:1.6;color:var(--ink-soft)}
+.ep-img .noimg,.epd-art .noimg{width:60%;margin:20% auto;height:auto;object-fit:contain}
+dialog.epd{border:0;padding:0;background:var(--panel);width:min(920px,calc(100vw - 32px));max-height:calc(100vh - 32px);border-radius:4px;color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog.epd::backdrop{background:rgba(26,34,40,.75)}
+dialog.epd .epd-close{position:absolute;right:10px;top:10px;z-index:2;background:var(--ribbon);border-color:var(--ribbon);color:var(--cream)}
+dialog.epd .epd-close:hover{background:var(--teal);border-color:var(--teal)}
+.epd-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+.epd-art{background:var(--sea) url(img/texture.jpg) center/400px}
+.epd-art img{width:100%;height:100%;object-fit:cover;aspect-ratio:1}
+.epd-info{padding:clamp(18px,3vw,34px);display:grid;gap:12px;align-content:center}
+.epd-info h2{font-size:var(--step-2)}
+.epd-info p{margin:0}
+.epd-info audio{width:100%}
+dialog.epd.has-gal{width:min(1000px,calc(100vw - 32px))}
+.epd.has-gal .epd-in{grid-template-columns:minmax(0,1fr)}
+.epd.has-gal .epd-art{position:relative;background:#222}
+.epd.has-gal .epd-art img{aspect-ratio:auto;height:auto;max-height:62vh;object-fit:contain;margin:0 auto}
+.epd.has-gal .epd-info{align-content:start}
+.gal-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(246,241,228,.92);color:var(--ribbon);font-size:1.2rem;cursor:pointer;display:grid;place-items:center}
+.gal-btn.prev{left:12px}.gal-btn.next{right:12px}
+.gal-btn[disabled]{opacity:.35;cursor:default}
+.gal-count{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:.8rem;padding:2px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+.epd-note{font-size:.88rem;color:var(--brick,#a0522d);background:var(--panel-2);padding:8px 12px;border-radius:3px}
+
+/* ---------- lightbox ---------- */
+dialog.lb{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100vw;height:100vh;margin:0}
+dialog.lb::backdrop{background:rgba(26,34,40,.92)}
+.lb-inner{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:max(12px,env(safe-area-inset-top,0px)) 16px max(12px,env(safe-area-inset-bottom,0px))}
+.lb-bar{display:flex;justify-content:flex-end}
+.lb-stage{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;min-height:0}
+.lb-media{display:grid;place-items:center;height:100%;min-height:0}
+.lb-media img,.lb-media video{max-height:100%;max-width:100%;object-fit:contain}
+.lb-btn{background:transparent;border:1.5px solid #f6f1e4;color:#f6f1e4;border-radius:999px;width:44px;height:44px;cursor:pointer;font-size:1.2rem;display:grid;place-items:center}
+.lb-btn:hover{background:#f6f1e4;color:#2a2620}
+.lb-btn[disabled]{opacity:.25;cursor:default}
+.lb-cap{color:#f6f1e4;text-align:center;font-weight:500;font-size:var(--step-1);padding-top:10px}
+.lb-cap small{display:block;font-size:.8rem;opacity:.75;font-weight:400}
+.lb-nav-m{display:none;justify-content:center;gap:16px;padding-top:8px}
+
+@media (max-width:820px){
+  .gate{align-content:space-between;min-height:100svh;padding-block:16px 0}
+  .gate .flight{width:100%;margin:0;padding-block:clamp(40px,8vh,80px) 0}
+  .gate .bird{width:min(52vw,240px)}
+  .bubble-btn{width:min(24vw,104px)}
+  .go{font-size:clamp(1.4rem,6vw,2rem);padding:0 1.2em}
+  .mapwrap{order:2;position:relative;z-index:1;right:auto;bottom:auto;width:calc(100% + var(--gutter));max-width:none;margin:-22% calc(-1 * var(--gutter)) 0 auto;justify-self:end;align-self:end}
+  .gate .flight{justify-items:start}
+  .chief,.cv{grid-template-columns:minmax(0,1fr)}
+  .chief .photo{max-width:45%}
+  .kappa-intro{grid-template-columns:minmax(0,1fr)}
+  .kappa-intro img{max-width:60%}
+  .epd-in{grid-template-columns:minmax(0,1fr)}
+  .epd-art img{max-height:46vh}
+  .vids{grid-template-columns:minmax(0,1fr)}
+  .foot{grid-template-columns:minmax(0,1fr)}
+  .row .tile{flex-basis:calc(var(--r) * 120px)}
+  .menu{padding-inline:12px}
+  .menu .ribbon{padding:0 16px;height:auto;min-height:58px}
+  .lb-stage{grid-template-columns:minmax(0,1fr)}
+  .lb-stage .lb-btn{display:none}
+  .lb-nav-m{display:flex}
+}
+@media (max-width:520px){
+  .board-p{display:none}
+  .intro-m{display:block;margin:18px 0 0;max-width:36em}
+  .board{padding-top:9%}
+  .sky .langsw{position:static;margin-top:4px}
+  .sky{padding-bottom:40px}
+}
+@media (max-width:480px){
+  .cv li{grid-template-columns:minmax(0,1fr);gap:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="rib" viewBox="0 0 400 60" preserveAspectRatio="none" overflow="visible" style="overflow:visible">
+      <!-- tails behind the band, notched ends -->
+      <path style="fill:var(--ribbon-tail)" d="M28 18 H-26 L-12 40 L-26 62 H28 Z"/>
+      <path style="fill:var(--ribbon-tail)" d="M372 18 H426 L412 40 L426 62 H372 Z"/>
+      <!-- folds where the band tucks behind -->
+      <path style="fill:var(--ribbon-fold)" d="M0 54 L28 62 L28 54 Z"/>
+      <path style="fill:var(--ribbon-fold)" d="M400 54 L372 62 L372 54 Z"/>
+      <!-- the band -->
+      <path style="fill:var(--ribbon)" d="M0 6 Q200 3 400 6 L400 54 Q200 51 0 54 Z"/>
+      <path style="fill:none;stroke:var(--cream);stroke-opacity:.4;stroke-width:1.2;stroke-dasharray:5 4" d="M6 11 Q200 8 394 11 M6 49 Q200 46 394 49" vector-effect="non-scaling-stroke"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="app"></div>
+
+<dialog class="epd" id="epdlg" aria-labelledby="epdTitle">
+  <button class="epd-close lb-btn" type="button" aria-label="關閉">✕</button>
+  <div class="epd-in"><div class="epd-art"></div><div class="epd-info"></div></div>
+</dialog>
+
+<dialog class="lb" id="lb" aria-label="作品檢視">
+  <div class="lb-inner">
+    <div class="lb-bar"><button class="lb-btn" id="lbClose" type="button" aria-label="關閉">✕</button></div>
+    <div class="lb-stage">
+      <button class="lb-btn" id="lbPrev" type="button" aria-label="上一張">←</button>
+      <div class="lb-media" id="lbMedia"></div>
+      <button class="lb-btn" id="lbNext" type="button" aria-label="下一張">→</button>
+    </div>
+    <div>
+      <div class="lb-cap" id="lbCap"></div>
+      <div class="lb-nav-m"><button class="lb-btn" id="lbPrevM" type="button" aria-label="上一張">←</button><button class="lb-btn" id="lbNextM" type="button" aria-label="下一張">→</button></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const M = {"一起玩吧.jpg": {"src": "img/w001.jpg", "thumb": "img/w001-t.jpg", "w": 1739, "h": 1739}, "上課風景.jpg": {"src": "img/w002.jpg", "thumb": "img/w002-t.jpg", "w": 1340, "h": 1339}, "別傷心了.jpg": {"src": "img/w003.jpg", "thumb": "img/w003-t.jpg", "w": 1739, "h": 1739}, "吐司食譜.jpg": {"src": "img/w004.jpg", "thumb": "img/w004-t.jpg", "w": 1800, "h": 675}, "啟航.jpg": {"src": "img/w005.jpg", "thumb": "img/w005-t.jpg", "w": 1800, "h": 1791}, "喬弗瑞先生的聖誕節.mp4": {"video": "vid/w006.mp4", "thumb": "img/w006-t.jpg", "w": 1280, "h": 720}, "夏季.jpg": {"src": "img/w007.jpg", "thumb": "img/w007-t.jpg", "w": 1730, "h": 1730}, "大海的禮物 2.jpg": {"src": "img/w008.jpg", "thumb": "img/w008-t.jpg", "w": 1800, "h": 1299}, "如何帶狗狗去旅行.jpg": {"src": "img/w009.jpg", "thumb": "img/w009-t.jpg", "w": 1800, "h": 1716}, "媽媽與她最好的朋友.jpg": {"src": "img/w010.jpg", "thumb": "img/w010-t.jpg", "w": 1800, "h": 1089}, "媽媽，我可以帶他回家嗎？.jpg": {"src": "img/w011.jpg", "thumb": "img/w011-t.jpg", "w": 1800, "h": 1069}, "小河童的暑假/01.jpg": {"src": "img/w012.jpg", "thumb": "img/w012-t.jpg", "w": 1800, "h": 1307}, "小河童的暑假/02.jpg": {"src": "img/w013.jpg", "thumb": "img/w013-t.jpg", "w": 1800, "h": 1089}, "小河童的暑假/03.jpg": {"src": "img/w014.jpg", "thumb": "img/w014-t.jpg", "w": 1800, "h": 1089}, "小河童的聖誕節.jpg": {"src": "img/w015.jpg", "thumb": "img/w015-t.jpg", "w": 1800, "h": 1628}, "小煤找工作/01.jpg": {"src": "img/w016.jpg", "thumb": "img/w016-t.jpg", "w": 1800, "h": 1102}, "小煤找工作/02.jpg": {"src": "img/w017.jpg", "thumb": "img/w017-t.jpg", "w": 1800, "h": 1102}, "小煤找工作/03.jpg": {"src": "img/w018.jpg", "thumb": "img/w018-t.jpg", "w": 1800, "h": 1102}, "小煤找工作/04.jpg": {"src": "img/w019.jpg", "thumb": "img/w019-t.jpg", "w": 1800, "h": 1069}, "小煤找工作/05.jpg": {"src": "img/w020.jpg", "thumb": "img/w020-t.jpg", "w": 1800, "h": 1069}, "小煤找工作/06.jpg": {"src": "img/w021.jpg", "thumb": "img/w021-t.jpg", "w": 1800, "h": 1069}, "小煤找工作/07.jpg": {"src": "img/w022.jpg", "thumb": "img/w022-t.jpg", "w": 1800, "h": 1069}, "小老虎.jpg": {"src": "img/w023.jpg", "thumb": "img/w023-t.jpg", "w": 1181, "h": 1181}, "我不要剪頭髮.jpg": {"src": "img/w024.jpg", "thumb": "img/w024-t.jpg", "w": 1636, "h": 1636}, "我們家的月餅.jpg": {"src": "img/w025.jpg", "thumb": "img/w025-t.jpg", "w": 1800, "h": 1089}, "我的夢想.jpg": {"src": "img/w026.jpg", "thumb": "img/w026-t.jpg", "w": 1800, "h": 1800}, "採蘑菇.jpg": {"src": "img/w027.jpg", "thumb": "img/w027-t.jpg", "w": 1800, "h": 1089}, "插畫地圖.jpg": {"src": "img/w028.jpg", "thumb": "img/w028-t.jpg", "w": 1275, "h": 1800}, "日出禾作系列/包裝拍照.png": {"src": "img/w029.jpg", "thumb": "img/w029-t.jpg", "w": 1672, "h": 1086}, "日出禾作系列/包裝拍照2.png": {"src": "img/w030.jpg", "thumb": "img/w030-t.jpg", "w": 1162, "h": 770}, "日出禾作系列/包裝拍照3.png": {"src": "img/w031.jpg", "thumb": "img/w031-t.jpg", "w": 1162, "h": 772}, "日出禾作系列/囍米插畫設計.jpg": {"src": "img/w032.jpg", "thumb": "img/w032-t.jpg", "w": 555, "h": 644}, "日出禾作系列/彌月米包裝設計.jpg": {"src": "img/w033.jpg", "thumb": "img/w033-t.jpg", "w": 1110, "h": 1287}, "日出禾作系列/日出禾作包裝設計.jpg": {"src": "img/w034.jpg", "thumb": "img/w034-t.jpg", "w": 1570, "h": 945}, "日出禾作系列/農曆過年插畫.jpg": {"src": "img/w035.jpg", "thumb": "img/w035-t.jpg", "w": 1800, "h": 1800}, "暑假的游泳池.jpg": {"src": "img/w036.jpg", "thumb": "img/w036-t.jpg", "w": 1800, "h": 1089}, "暑假美好的一日.jpg": {"src": "img/w037.jpg", "thumb": "img/w037-t.jpg", "w": 1800, "h": 1089}, "柚子山探險.jpg": {"src": "img/w038.jpg", "thumb": "img/w038-t.jpg", "w": 1772, "h": 1264}, "泡杯茶吧.jpg": {"src": "img/w039.jpg", "thumb": "img/w039-t.jpg", "w": 1739, "h": 1739}, "深夜的烏龍麵店.jpg": {"src": "img/w040.jpg", "thumb": "img/w040-t.jpg", "w": 1800, "h": 1009}, "湯系列/巧達湯（動畫）.gif": {"video": "vid/w041.mp4", "loop": true, "thumb": "img/w041-t.jpg", "w": 886, "h": 864}, "湯系列/湯圓02(動畫).gif": {"video": "vid/w042.mp4", "loop": true, "thumb": "img/w042-t.jpg", "w": 1772, "h": 1728}, "湯系列/豬肉味增湯animation.gif": {"video": "vid/w043.mp4", "loop": true, "thumb": "img/w043-t.jpg", "w": 886, "h": 864}, "潔西暑假/潔西的暑假3.mp4": {"video": "vid/w045.mp4", "thumb": "img/w045-t.jpg", "w": 1280, "h": 720}, "爸爸的腳踏車.mov": {"video": "vid/w047.mp4", "thumb": "img/w047-t.jpg", "w": 1280, "h": 720}, "章魚阿姨快餐店.jpg": {"src": "img/w048.jpg", "thumb": "img/w048-t.jpg", "w": 1800, "h": 1089}, "繪本《小河童生氣了》/01.jpg": {"src": "img/w049.jpg", "thumb": "img/w049-t.jpg", "w": 1800, "h": 1025}, "繪本《小河童生氣了》/03.jpg": {"src": "img/w050.jpg", "thumb": "img/w050-t.jpg", "w": 1800, "h": 1025}, "繪本《小河童生氣了》/10.jpg": {"src": "img/w051.jpg", "thumb": "img/w051-t.jpg", "w": 1800, "h": 1025}, "繪本《小河童，幫幫我》/01.jpg": {"src": "img/w052.jpg", "thumb": "img/w052-t.jpg", "w": 1800, "h": 1025}, "繪本《小河童，幫幫我》/07.jpg": {"src": "img/w053.jpg", "thumb": "img/w053-t.jpg", "w": 1800, "h": 1025}, "繪本《小河童，幫幫我》/17.jpg": {"src": "img/w054.jpg", "thumb": "img/w054-t.jpg", "w": 1800, "h": 1025}, "繪本《耳朵缺一角的啾啾》/01.jpg": {"src": "img/w055.jpg", "thumb": "img/w055-t.jpg", "w": 1800, "h": 1025}, "繪本《耳朵缺一角的啾啾》/03.jpg": {"src": "img/w056.jpg", "thumb": "img/w056-t.jpg", "w": 1800, "h": 1025}, "繪本《耳朵缺一角的啾啾》/08.jpg": {"src": "img/w057.jpg", "thumb": "img/w057-t.jpg", "w": 1800, "h": 1025}, "繪本《耳朵缺一角的啾啾》/18.jpg": {"src": "img/w058.jpg", "thumb": "img/w058-t.jpg", "w": 1800, "h": 1025}, "繪本《轉學的第一天》/01.jpg": {"src": "img/w059.jpg", "thumb": "img/w059-t.jpg", "w": 1800, "h": 1025}, "繪本《轉學的第一天》/05.jpg": {"src": "img/w060.jpg", "thumb": "img/w060-t.jpg", "w": 1800, "h": 1025}, "繪本《轉學的第一天》/18.jpg": {"src": "img/w061.jpg", "thumb": "img/w061-t.jpg", "w": 1800, "h": 1025}, "聊天中的船隻.jpg": {"src": "img/w062.jpg", "thumb": "img/w062-t.jpg", "w": 1800, "h": 790}, "菜市場.mp4": {"video": "vid/w063.mp4", "thumb": "img/w063-t.jpg", "w": 1280, "h": 720}, "調皮小南瓜號.jpg": {"src": "img/w064.jpg", "thumb": "img/w064-t.jpg", "w": 1800, "h": 629}, "軟綿綿的床.jpg": {"src": "img/w065.jpg", "thumb": "img/w065-t.jpg", "w": 1739, "h": 1739}, "這是我們的新家.jpg": {"src": "img/w066.jpg", "thumb": "img/w066-t.jpg", "w": 1739, "h": 1739}, "關山生活節海報.jpg": {"src": "img/w067.jpg", "thumb": "img/w067-t.jpg", "w": 1275, "h": 1800}, "雨傘森拎.jpg": {"src": "img/w068.jpg", "thumb": "img/w068-t.jpg", "w": 1800, "h": 1089}, "馬戲團1.jpg": {"src": "img/w069.jpg", "thumb": "img/w069-t.jpg", "w": 1800, "h": 1068}, "馬戲團2.jpg": {"src": "img/w070.jpg", "thumb": "img/w070-t.jpg", "w": 1800, "h": 1800}, "鷺鷥山地/一起前往鷺鷥山地.jpg": {"src": "img/w071.jpg", "thumb": "img/w071-t.jpg", "w": 1800, "h": 1013}, "鷺鷥山地/白鷺鷥飯店.jpg": {"src": "img/w072.jpg", "thumb": "img/w072-t.jpg", "w": 1201, "h": 1800}, "麵包店.jpg": {"src": "img/w073.jpg", "thumb": "img/w073-t.jpg", "w": 1181, "h": 827}, "黛西的聖誕節/一起來裝飾聖誕樹吧.jpg": {"src": "img/w074.jpg", "thumb": "img/w074-t.jpg", "w": 1800, "h": 1135}, "黛西的聖誕節/我只有這麼小的聖誕樹.jpg": {"src": "img/w075.jpg", "thumb": "img/w075-t.jpg", "w": 1800, "h": 1089}, "潔西暑假/潔西的暑假1.mp4": {"video": "vid/w046.mp4", "thumb": "img/w046-t.jpg", "w": 1280, "h": 720}, "潔西暑假/潔西的暑假2.mp4": {"video": "vid/w044.mp4", "thumb": "img/w044-t.jpg", "w": 1280, "h": 720}};
+const T = {
+  zh:{lang:"EN",
+      intro:"村莊的名稱「Pocapoca」源自日文「ぽかぽか」，有溫暖人心的意思。住在故事村裡的村民每天都上演各式各樣溫暖的故事，村長 Poca 閒暇時，便將這些事情記錄下來，因此有了這裡……",
+      worksIntro:"同一個故事或系列的作品會排在一起。點圖片可以放大，用左右鍵翻頁。",
+      podIntro:"村長每兩週說一個 Pocapoca 村的溫暖故事，每一集都配上一張新畫的插畫。點插畫可以看大圖。",
+      listen:"收聽這一集 →",listenAll:"在 Firstory 收聽",ytChannel:"YouTube 頻道",ytVersion:"YouTube 影片版",audioNote:"這一集暫時無法在這裡播放，請改用下面的 Firstory 連結收聽。",all:"全部",kappa:"小河童日記",geoffrey:"喬弗瑞先生的冒險筆記",mail:"村長信箱",other:"其他故事",search:"搜尋集數或故事名稱",showMore:"顯示更多",eps:"集",min:"分鐘",
+      ytTitle:"YouTube「Pocapoca故事村」",ytBody:"村長說故事、畫畫過程和動畫短片，都在 YouTube 頻道。",ytGo:"前往頻道 →",
+      copy:"複製",copied:"已複製",cIllus:"插畫、繪本聯繫",cBiz:"授權／商業合作請洽：毛毛蟲文創（凱特）"},
+  en:{lang:"中文",
+      intro:"Pocapoca comes from the Japanese “ぽかぽか”, meaning warmth that comforts the heart. All sorts of warm stories happen every day in Pocapoca Story Village, and whenever she has a moment, Chief Poca writes them down. That's how this place began…",
+      worksIntro:"Pieces from the same story or series sit together. Click an image to enlarge it, and use the arrow keys to turn the page.",
+      podIntro:"Every other week, Chief Poca tells a warm story from Pocapoca Village, and each episode comes with a new illustration. The stories are in Mandarin. Click an illustration to enlarge it.",
+      listen:"Listen →",listenAll:"Listen on Firstory",ytChannel:"YouTube channel",ytVersion:"Watch on YouTube",audioNote:"This episode can’t play here right now. Please use the Firstory link below.",all:"All",kappa:"Kappa's Diary",geoffrey:"Mr. Geoffrey's Adventures",mail:"Mailbox",other:"Other stories",search:"Search episodes",showMore:"Show more",eps:"episodes",min:"min",
+      ytTitle:"YouTube: Pocapoca Story Village",ytBody:"Storytelling by Chief Poca, drawing process videos and short animations.",ytGo:"Visit the channel →",
+      copy:"Copy",copied:"Copied",cIllus:"Illustration & picture books",cBiz:"Licensing & business: Caterpillar Creative (Kate)"}
+};
+const LINKS={yt:"https://www.youtube.com/channel/UC4ErmW38TjVICSTMydcmmJw",fb:"https://www.facebook.com/pocapocastoryvillage/",ig:"https://www.instagram.com/pocapoca_story_village/",donate:"https://reurl.cc/DZD4jE",mail:"pocasuya@gmail.com"};
+
+/* works: key = file path inside works/, zh = file name, en = translation */
+const BOOKS=[
+ {id:"book1",zh:"繪本《轉學的第一天》",en:"The First Day at a New School",note:{zh:"小河童成長系列 1｜小光點出版社，2019",en:"Little Kappa series, book 1 · 2019"},dir:"繪本《轉學的第一天》",files:["01.jpg","05.jpg","18.jpg"]},
+ {id:"book2",zh:"繪本《小河童，幫幫我》",en:"Little Kappa, Help Me!",note:{zh:"小河童成長系列 2｜小光點出版社，2020",en:"Little Kappa series, book 2 · 2020"},dir:"繪本《小河童，幫幫我》",files:["01.jpg","07.jpg","17.jpg"]},
+ {id:"book3",zh:"繪本《耳朵缺一角的啾啾》",en:"Chuchu and the Nicked Ear",note:{zh:"小河童成長系列 3｜小光點出版社，2020",en:"Little Kappa series, book 3 · 2020"},dir:"繪本《耳朵缺一角的啾啾》",files:["01.jpg","03.jpg","08.jpg","18.jpg"]},
+ {id:"book4",zh:"繪本《小河童生氣了》",en:"Little Kappa Gets Angry",note:{zh:"小河童成長系列",en:"Little Kappa series"},dir:"繪本《小河童生氣了》",files:["01.jpg","03.jpg","10.jpg"]}
+];
+const SERIES=[
+ {id:"kappasummer",zh:"小河童的暑假",en:"Little Kappa's Summer",dir:"小河童的暑假",files:["01.jpg","02.jpg","03.jpg"]},
+ {id:"coal",zh:"小煤找工作",en:"Little Coal Looks for a Job",dir:"小煤找工作",files:["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg","07.jpg"]},
+ {id:"daisy",zh:"黛西的聖誕節",en:"Daisy's Christmas",dir:"黛西的聖誕節",files:[["一起來裝飾聖誕樹吧.jpg","Let's Decorate the Tree"],["我只有這麼小的聖誕樹.jpg","My Tree Is Only This Small"]]},
+ {id:"egret",zh:"鷺鷥山地",en:"Egret Highlands",dir:"鷺鷥山地",files:[["一起前往鷺鷥山地.jpg","Off to Egret Highlands"],["白鷺鷥飯店.jpg","The Egret Hotel"]]},
+ {id:"soup",zh:"湯系列",en:"Soup Series",dir:"湯系列",files:[["巧達湯（動畫）.gif","Chowder","巧達湯"],["湯圓02(動畫).gif","Tangyuan","湯圓"],["豬肉味增湯animation.gif","Pork Miso Soup","豬肉味增湯"]]},
+ {id:"rice",zh:"日出禾作系列",en:"Sunrise Harvest Rice",dir:"日出禾作系列",files:[["日出禾作包裝設計.jpg","Sunrise Harvest packaging"],["農曆過年插畫.jpg","Lunar New Year illustration"],["囍米插畫設計.jpg","Wedding rice illustration"],["彌月米包裝設計.jpg","Baby full-month rice packaging"],["包裝拍照.png","Packaging photo 1"],["包裝拍照2.png","Packaging photo 2"],["包裝拍照3.png","Packaging photo 3"]]}
+];
+const SINGLES=[
+ ["媽媽與她最好的朋友.jpg","Mom and Her Best Friend"],["我們家的月餅.jpg","Our Family's Mooncakes"],["暑假美好的一日.jpg","A Lovely Summer Day"],["大海的禮物 2.jpg","A Gift from the Sea","大海的禮物"],["調皮小南瓜號.jpg","The Naughty Pumpkin Express"],
+ ["小河童的聖誕節.jpg","Little Kappa's Christmas"],["深夜的烏龍麵店.jpg","The Late-Night Udon Shop"],["暑假的游泳池.jpg","The Summer Pool"],
+ ["章魚阿姨快餐店.jpg","Auntie Octopus's Diner"],["採蘑菇.jpg","Picking Mushrooms"],["媽媽，我可以帶他回家嗎？.jpg","Mom, Can I Take Him Home?"],
+ ["雨傘森拎.jpg","Umbrella Woods"],["啟航.jpg","Setting Sail"],["如何帶狗狗去旅行.jpg","How to Travel with Your Dog"],
+ ["夏季.jpg","Summer"],["我的夢想.jpg","My Dream"],["馬戲團1.jpg","Circus 1"],["馬戲團2.jpg","Circus 2"],
+ ["一起玩吧.jpg","Let's Play"],["上課風景.jpg","In Class"],["別傷心了.jpg","Don't Be Sad"],["小老虎.jpg","Little Tiger"],
+ ["我不要剪頭髮.jpg","I Don't Want a Haircut"],["泡杯茶吧.jpg","Let's Have Some Tea"],["軟綿綿的床.jpg","A Fluffy Bed"],
+ ["這是我們的新家.jpg","This Is Our New Home"],["柚子山探險.jpg","Adventure on Pomelo Hill"],["聊天中的船隻.jpg","Boats Having a Chat"],
+ ["麵包店.jpg","The Bakery"],["吐司食譜.jpg","Toast Recipe"],["插畫地圖.jpg","Illustrated Map"],["關山生活節海報.jpg","Guanshan Life Festival Poster"]
+];
+const ANIM=[["喬弗瑞先生的聖誕節.mp4","Mr. Geoffrey's Christmas"],["菜市場.mp4","The Morning Market"],["爸爸的腳踏車.mov","Dad's Bicycle"]];
+const ANIM_GROUPS=[{id:"jessie",zh:"潔西的暑假",en:"Jessie's Summer",dir:"潔西暑假",files:[["潔西的暑假1.mp4","Jessie's Summer 1"],["潔西的暑假2.mp4","Jessie's Summer 2"],["潔西的暑假3.mp4","Jessie's Summer 3"]]}];
+
+const NEWS=[
+ {d:"2026.08",zh:["新書出版《黑狗兄探長偵探實驗室 1：影子偷竊事件》","小漫遊出版社"],en:["New book: Detective Black Dog's Lab 1 — The Shadow Theft","Xiao Man You Publishing"]},
+ {d:"2026.05–07",zh:["「小河童的手語課」個展","國立成功大學圖書館一樓理泊區"],en:["Solo exhibition: Little Kappa's Sign Language Class","NCKU Library, 1F"]},
+ {d:"2026.04",zh:["「小河童的手語課」個展","屋頂上 roof gallery"],en:["Solo exhibition: Little Kappa's Sign Language Class","Roof Gallery"]},
+ {d:"2026.02–03",zh:["「小河童的手語課」個展","國立臺灣圖書館・臺灣藝文走廊"],en:["Solo exhibition: Little Kappa's Sign Language Class","National Taiwan Library, Arts Corridor"]},
+ {d:"2025.05–06",zh:["「小河童的野餐邀請函」個展","屋頂上 roof gallery"],en:["Solo exhibition: Little Kappa's Picnic Invitation","Roof Gallery"]},
+ {d:"2024.04",zh:["新書出版《愛睡國王的夢》","二加一出版社"],en:["New book: The Sleepy King's Dream","2+1 Publishing"]}
+];
+
+const CV={
+ edu:[["2011–2014",{zh:"國立臺北藝術大學 藝術與人文教育研究所",en:"MA, Arts and Humanities Education, Taipei National University of the Arts"}],
+      ["2011–2012",{zh:"陳璐茜繪本／創作師資培訓班 第十期",en:"Picture Book Creation Teacher Training (10th cohort), Lucy Chen Studio"}],
+      ["2007–2011",{zh:"國立中山大學 中國文學系",en:"BA, Chinese Literature, National Sun Yat-sen University"}]],
+ awards:[["2021.03",{zh:"義大利波隆那插畫展 入圍",en:"Bologna Illustrators Exhibition, selected"}],
+      ["2016.07",{zh:"臺灣繪本協會 第四屆個人風繪本文學獎 佳作",en:"Taiwan Picture Book Association, 4th Unique Picture Book Award, honorable mention"}],
+      ["2015.08",{zh:"社團法人台灣環境資訊協會 第三屆十大「節」出綠繪本 佳作",en:"Taiwan Environmental Information Association, 3rd Green Picture Book Award, honorable mention"}]],
+ pub:[["2026.08",{zh:"《黑狗兄探長偵探實驗室 1：影子偷竊事件》小漫遊出版社",en:"Detective Black Dog's Lab 1: The Shadow Theft (Xiao Man You)"}],
+      ["2024.04",{zh:"《愛睡國王的夢》二加一出版社",en:"The Sleepy King's Dream (2+1 Publishing)"}],
+      ["2020.09",{zh:"《動物村莊的節慶派對》（雙書套組）小光點出版社",en:"Festival Party in the Animal Village, 2-book set (Little Light)"}],
+      ["2020.03",{zh:"《小河童成長系列 3—耳朵缺一角的啾啾》小光點出版社",en:"Little Kappa 3: Chuchu and the Nicked Ear (Little Light)"}],
+      ["2020.03",{zh:"《小河童成長系列 2—小河童幫幫我！》小光點出版社",en:"Little Kappa 2: Little Kappa, Help Me! (Little Light)"}],
+      ["2019.12",{zh:"《小河童成長系列 1—轉學的第一天》小光點出版社",en:"Little Kappa 1: The First Day at a New School (Little Light)"}]],
+ expo:[["2026.05–07",{zh:"國立成功大學圖書館一樓理泊區「小河童的手語課」個展",en:"Little Kappa's Sign Language Class, solo, NCKU Library"}],
+      ["2026.04",{zh:"屋頂上 roof gallery「小河童的手語課」個展",en:"Little Kappa's Sign Language Class, solo, Roof Gallery"}],
+      ["2026.02–03",{zh:"國立臺灣圖書館・臺灣藝文走廊「小河童的手語課」個展",en:"Little Kappa's Sign Language Class, solo, National Taiwan Library"}],
+      ["2025.05–06",{zh:"屋頂上 roof gallery「小河童的野餐邀請函」個展",en:"Little Kappa's Picnic Invitation, solo, Roof Gallery"}],
+      ["2023.10–2024.02",{zh:"台北貳號基地 Cafe「歡迎來到 Pocapoca 故事村」個展",en:"Welcome to Pocapoca Story Village, solo, Base No.2 Cafe, Taipei"}],
+      ["2023.03",{zh:"台南晶英酒店 台南藝術博覽會",en:"Art Tainan, Silks Place Tainan"}],
+      ["2022.01–03",{zh:"愛藝享 2022 插畫家聯合展出",en:"Ai Yi Xiang 2022 illustrators' group show"}],
+      ["2021.12",{zh:"台中日月千禧酒店 台中藝術博覽會",en:"Art Taichung, Millennium Hotel Taichung"}],
+      ["2021.10–11",{zh:"1916 工坊「回到遇見你的 90° 角」",en:"Back to the 90° Corner Where I Met You, 1916 Workshop"}],
+      ["2020.11",{zh:"駁二藝術特區 大勇倉庫群「高雄漾藝術博覽會」",en:"Young Art Kaohsiung, Pier-2 Art Center"}],
+      ["2019.12",{zh:"駁二藝術特區 大勇倉庫群「高雄漾藝術博覽會」",en:"Young Art Kaohsiung, Pier-2 Art Center"}],
+      ["2019.05–06",{zh:"駁二藝術特區 漾藝廊「船隻圖鑑」個展",en:"A Field Guide to Boats, solo, Pier-2 Art Center"}],
+      ["2018.10–11",{zh:"小日子商號 臺南神農店「臺南印象」聯展",en:"Impressions of Tainan, group show, Oneday Shop Tainan"}],
+      ["2016.11–12",{zh:"干豆追漁—基隆正濱漁港藝術駐村成果展",en:"Zhengbin Fishing Port residency exhibition, Keelung"}],
+      ["2015.09–2016.02",{zh:"紅頂穀創「徵禮啟示」聯展",en:"Gift Wanted, group show, Red Top Granary"}],
+      ["2015.06–07",{zh:"醉美空間「轉學生 圖文展」個展",en:"The New Student, solo, Zui Mei Space"}]],
+ res:[["2019.04–06",{zh:"駁二藝術特區 藝術家進駐計劃",en:"Pier-2 Art Center Artist Residency, Kaohsiung"}],
+      ["2016.02–03",{zh:"基隆正濱漁港藝術駐村",en:"Zhengbin Fishing Port Artist Residency, Keelung"}]],
+ collab:[["2023.04–",{zh:"國語日報「故事版」專欄插畫",en:"Mandarin Daily News, Story page column illustrations"}],
+      ["2022.12",{zh:"農糧署「小玩一下，有機到你家！」遊戲插畫設計",en:"Agriculture and Food Agency, organic food game illustrations"}],
+      ["2022.03–05",{zh:"基隆文化開傳 封面插畫設計",en:"Keelung culture magazine, cover illustrations"}],
+      ["2019.06",{zh:"帝亞吉歐「酒前酒後不開車，酒駕零容忍 創意著色／故事創作比賽」主視覺設計",en:"Diageo, anti drink-driving coloring & story contest key visual"}],
+      ["2019.01–",{zh:"國語日報「討厭鬼不要來」專欄插畫",en:"Mandarin Daily News, “Go Away, Pest” column illustrations"}],
+      ["2017.10–2018.09",{zh:"國語日報「學會照顧自己」專欄插畫",en:"Mandarin Daily News, “Taking Care of Myself” column illustrations"}],
+      ["2017.04",{zh:"「媽媽教我的詩」全國兒童創意朗詩大賽 活動主視覺",en:"“Poems Mom Taught Me” national children's poetry contest key visual"}],
+      ["2017.03",{zh:"《看見生命的故事》國語日報 2016 華夏徵文中小學生作品集 插畫設計",en:"Seeing Life's Stories, Mandarin Daily News student anthology illustrations"}],
+      ["2016.10",{zh:"關渡四季系列明信片 插畫設計",en:"Guandu Four Seasons postcard series"}],
+      ["2015.04",{zh:"私立聖心小學 繪本壁畫",en:"Sacred Heart Primary School, picture-book mural"}]],
+ cross:[["2022.05",{zh:"南熠樂集 x 正修科技大學《尋找，幸福的聲色》",en:"Nan Yi Ensemble × Cheng Shiu University, In Search of the Sounds and Colors of Happiness"}],
+      ["2018.05",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《和媽媽一起去上班》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: Going to Work with Mom"}],
+      ["2017.06",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《北方船隻圖鑑》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: A Field Guide to Northern Boats"}],
+      ["2017.05",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《轉學生日記：藍色的旅程》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: Diary of a New Student — The Blue Journey"}]]
+};
+const BIO={
+ village:{zh:T.zh.intro,en:T.en.intro},
+ poca:{zh:"繪本／插畫工作者，名稱源於日文「ぽかぽか」，有著溫暖人心的意思，也是她對創作的期許：希望能創作具溫度的插畫與故事，帶給每個人前進的勇氣。她的風格充滿童趣並發人深省。著作有《小河童成長系列繪本》1～4 冊、《動物村莊的節慶派對》、《愛睡國王的夢》。現在也成立兒童故事 Podcast 頻道「Poca村長的故事時間」與 YouTube 頻道「Pocapoca故事村」，希望透過不同方式，讓更多朋友認識她的作品。",
+       en:"Poca is a picture-book author and illustrator from Taiwan. Her name comes from the Japanese “ぽかぽか”, warmth that comforts the heart, which is also what she hopes her work will do: illustrations and stories with real warmth that give people the courage to keep going. Her style is playful and childlike, with ideas that stay with you. Her books include the four-volume Little Kappa series, Festival Party in the Animal Village and The Sleepy King's Dream. She also hosts the children's story podcast “Chief Poca's Story Time” and the YouTube channel “Pocapoca Story Village”, so more people can meet her work in different ways."}
+};
+
+
+
+/* ---------- helpers ---------- */
+let lang="zh";
+try{const s=localStorage.getItem("poca-lang");if(s==="en"||s==="zh")lang=s;}catch(e){}
+const t=k=>T[lang][k];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stripExt=f=>f.replace(/\.[^.]+$/,"");
+const RIB='<svg aria-hidden="true"><use href="#rib"/></svg>';
+const st=(en,zh,tag="h2",id="")=>`<${tag} class="stitle"${id?` id="${id}"`:""}><span class="en">${en}</span><span class="zh">${zh}</span></${tag}>`;
+
+function item(key,zh,en){const m=M[key];return m?{key,zh,en,...m}:null;}
+function groupItems(g,isBook){
+  return g.files.map(f=>{
+    if(Array.isArray(f)) return item(`${g.dir}/${f[0]}`, f[2]||stripExt(f[0]), f[1]);
+    const n=stripExt(f);
+    return item(`${g.dir}/${f}`, `${g.zh.replace(/^繪本/,"")} ${isBook?"p."+n:n}`, `${g.en} ${isBook?"p."+n:"#"+n}`);
+  }).filter(Boolean);
+}
+const singles=SINGLES.map(([f,en,zh])=>item(f,zh||stripExt(f),en)).filter(Boolean);
+const anims=ANIM.map(([f,en])=>item(f,stripExt(f),en)).filter(Boolean);
+let LB_SETS={},setId=0;
+const registerSet=items=>{const id="s"+(setId++);LB_SETS[id]=items;return id;};
+function tile(it,set,idx){
+  const r=(it.w/it.h).toFixed(3), title=it[lang];
+  const media=(it.video&&it.loop)
+    ?`<video src="${it.video}" poster="${it.thumb}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
+    :`<img src="${it.thumb}" alt="${esc(title)}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async">`;
+  const play=(it.video&&!it.loop)?`<span class="play" aria-hidden="true"></span>`:"";
+  return `<button class="tile" type="button" style="--r:${r}" data-set="${set}" data-i="${idx}" aria-label="${esc(title)}">${media}${play}<span class="cap">${esc(title)}</span></button>`;
+}
+
+/* ---------- landing ---------- */
+function viewGate(){
+  return `<main class="gate">
+    <div class="mapwrap"><img class="map" src="img/map-hd.webp" alt="Pocapoca 故事村地圖 / Map of Pocapoca Story Village" width="2400" height="1795"><img class="eboat" src="img/elephant-boat.png" alt=""></div>
+    <div class="flight">
+      <div class="bird-row">
+        <img class="bird" src="img/bird.png" alt="" width="700" height="700">
+        <div class="bubbles" role="group" aria-label="Language 語言">
+          <button class="bubble-btn zh" type="button" data-lang="zh">中文</button>
+          <button class="bubble-btn en-b" type="button" data-lang="en">EN</button>
+        </div>
+      </div>
+      <div class="ribbon go en">${RIB}<span>Let's Go To Pocapoca Village</span></div>
+    </div>
+  </main>`;
+}
+
+/* ---------- inner frame ---------- */
+const NAV=[["home","Home"],["about","About"],["works","Works"],["podcast","Podcast"]];
+function frame(route,inner){
+  return `<header class="sky">
+      <img class="s-balloon" src="img/balloon.png" alt="">
+      <a class="title en" href="#home"><img class="s-star" src="img/star.png" alt="">Pocapoca Story Village<small>Pocapoca 故事村</small></a>
+      <img class="s-bird" src="img/bird.png" alt="" width="700" height="700">
+      <p class="welcome en">Welcome</p>
+      <span class="langsw" role="group" aria-label="Language 語言"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3z"/></svg><button type="button" data-setlang="zh" aria-pressed="${lang==="zh"}">中文</button><button type="button" class="en-opt" data-setlang="en" aria-pressed="${lang==="en"}">EN</button></span>
+    </header>
+    <div class="menu"><div class="ribbon">${RIB}
+      <nav aria-label="Menu">${NAV.map(([r,l])=>`<a href="#${r}"${r===route?' aria-current="page"':""}>${l}</a>`).join("")}</nav></div></div>
+    <main class="panel">${inner}</main>
+    <footer class="panel-foot">${footer()}</footer>`;
+}
+const ICONS={
+ yt:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15V9l5.8 3-5.8 3z"/></svg>',
+ ig:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>',
+ fb:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>',
+ pod:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 0 0-7 7v4a7 7 0 0 0 6 6.9V22H8v2h8v-2h-3v-3.1a7 7 0 0 0 6-6.9V8a7 7 0 0 0-7-7zm-3 7a3 3 0 0 1 6 0v4a3 3 0 0 1-6 0V8z"/></svg>'
+};
+const CONTACT={illus:"pocasuya@gmail.com",biz:"Kate@indot.com.tw"};
+const POD_URL="https://open.firstory.me/user/pocastory";
+function footer(){
+  const row=(k,label)=>`<div class="contact-row"><span class="what">${esc(label)}</span><span class="mail"><code id="mail-${k}">${CONTACT[k]}</code><button class="copy" type="button" data-copy="${k}">${esc(t("copy"))}</button></span></div>`;
+  return `<div class="foot">
+    <div><h4>Contact<span>聯絡</span></h4><div class="contacts">${row("illus",t("cIllus"))}${row("biz",t("cBiz"))}</div></div>
+    <div><h4>Follow<span>追蹤村莊</span></h4><div class="social">
+      <a href="${LINKS.yt}" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">${ICONS.yt}</a>
+      <a href="${LINKS.ig}" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">${ICONS.ig}</a>
+      <a href="${LINKS.fb}" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">${ICONS.fb}</a>
+      <a href="${POD_URL}" target="_blank" rel="noopener" aria-label="Podcast" title="Podcast">${ICONS.pod}</a></div></div>
+  </div><p class="small">© Pocapoca Story Village · Poca 鄭夙雅</p>`;
+}
+
+/* ---------- about ---------- */
+function cvList(k,en,zh,wide){
+  return `<div class="${wide?"wide":""}">${st(en,zh,"h3")}<ul>${CV[k].map(([d,x])=>`<li><time>${d}</time><span>${esc(x[lang])}</span></li>`).join("")}</ul></div>`;
+}
+function viewAbout(){
+  return `<section class="notice"><div class="scene">
+      <div class="board">
+        ${st("About the Village","關於故事村")}
+        <div class="board-in">
+          <div>
+            <p class="board-p">${esc(t("intro"))}</p>
+          </div>
+        </div>
+      </div>
+      <div class="ground" aria-hidden="true"></div><img class="p1" src="img/passer1.png" alt="" aria-hidden="true"><img class="p2" src="img/passer2.png" alt="" aria-hidden="true"></div>
+      <p class="intro-m">${esc(t("intro"))}</p>
+    </section>
+    <section class="chief">
+      <img class="photo" src="img/photo.jpg" alt="${lang==="zh"?"Poca 在「歡迎來到 Pocapoca 故事村」展覽現場":"Poca at her exhibition Welcome to Pocapoca Story Village"}" width="1600" height="1074">
+      <div>
+        <h2 class="label"><span class="en">About the Chief of Village</span><span class="zh">關於村長</span></h2>
+        <h3 class="en">${lang==="zh"?"Poca":"Poca (Cheng Su-Ya)"}</h3>
+        <p>${esc(BIO.poca[lang])}</p>
+      </div>
+    </section>
+    <div class="cv">
+      ${cvList("pub","Books","出版")}${cvList("awards","Awards","得獎")}
+      ${cvList("expo","Exhibitions","展覽",true)}
+      ${cvList("collab","Illustration","插畫合作")}${cvList("cross","Performance","跨界合作")}
+      ${cvList("edu","Education","學歷")}${cvList("res","Residency","駐村")}
+    </div>`;
+}
+
+/* ---------- works ---------- */
+function groupBlock(g,isBook){
+  const items=groupItems(g,isBook), s=registerSet(items);
+  const note=g.note?`<span class="meta">${esc(g.note[lang])}</span>`:"";
+  return `<div class="group" id="${g.id}">
+    <div class="group-head"><h3>${esc(lang==="zh"?g.zh.replace(/^繪本/,""):g.en)}</h3>${note}</div>
+    <div class="row">${items.map((it,i)=>tile(it,s,i)).join("")}</div></div>`;
+}
+function viewWorks(){
+  const ss=registerSet(singles), as=registerSet(anims);
+  return `${st("Works","作品","h1")}
+    <p class="intro">${esc(t("worksIntro"))}</p>
+    <nav class="chips" aria-label="Works">
+      <a href="#cat-books">Picture Books<span>繪本</span></a><a href="#cat-series">Series<span>系列</span></a><a href="#cat-singles">Illustrations<span>插畫</span></a><a href="#cat-anim">Animation<span>動畫</span></a>
+    </nav>
+    <section class="cat" id="cat-books">${st("Picture Books","繪本")}${BOOKS.map(b=>groupBlock(b,true)).join("")}</section>
+    <section class="cat" id="cat-series">${st("Series","系列作品")}${SERIES.map(b=>groupBlock(b,false)).join("")}</section>
+    <section class="cat" id="cat-singles">${st("Illustrations","插畫")}<div class="masonry">${singles.map((it,i)=>tile(it,ss,i)).join("")}</div></section>
+    <section class="cat" id="cat-anim">${st("Animation","動畫")}${ANIM_GROUPS.map(b=>groupBlock(b,false)).join("")}<div class="group"><div class="row">${anims.map((it,i)=>tile(it,as,i)).join("")}</div></div></section>`;
+}
+
+/* ---------- podcast ---------- */
+let EPS=[]; let EPS_LOADED=false;
+const AUDIO_PRE="https://sw.soundon.fm/p/N21NYJ/m.cdn.firstory.me/track/cklabznee4z8p08728tgfauzn/";
+const AUDIO_MID="/https%3A%2F%2Ffile.cdn.firstory.me%2FRecord%2Fcklabznee4z8p08728tgfauzn%2F";
+const YT_CHANNEL="https://www.youtube.com/channel/UC4ErmW38TjVICSTMydcmmJw";
+const KAPPA_INTRO={
+ zh:["我和媽媽從南邊的小島搬到 Pocapoca 村的山上，並就讀當地的小學。這裡沒有海，只有好高好高的山，每天都得走好遠的路才能到學校。雖然剛開始有點寂寞，但我現在有了新朋友，每天都很開心。","因為第一次到北方，第一次住山上，有許多不同的新體驗，所以我開始寫日記，把這裡的生活記錄下來，因此有了這些日記。"],
+ en:["Mom and I moved from a small island in the south to the mountains of Pocapoca Village, and I started going to the school there. There's no sea here, only very, very tall mountains, and I have to walk a long way to school every day. I felt a little lonely at first, but now I have new friends and every day is happy.","It's my first time in the north and my first time living in the mountains, and there are so many new things to try. So I started keeping a diary to write down my life here. That's how these diaries began."]
+};
+let podFilter="all",podQuery="",podShown=24;
+function epKind(t){ if(/村長信箱/.test(t))return"mail"; if(/喬弗瑞先生的冒險筆記|釣雲者/.test(t))return"geoffrey"; if(/小河童/.test(t))return"kappa"; return"other"; }
+function podList(){
+  const q=podQuery.trim().toLowerCase();
+  return EPS.map((e,i)=>({e,i})).filter(({e})=>(podFilter==="all"||epKind(e[0])===podFilter)&&(!q||(e[0]+e[5]).toLowerCase().includes(q)));
+}
+function epCard({e,i}){
+  const [title,date,dur,slug,story,desc,img]=e;
+  const pic=img?`<img src="${img}" alt="" loading="lazy" width="266" height="266">`:`<img class="noimg" src="img/bird.png" alt="">`;
+  return `<article class="ep"><button class="ep-open" type="button" data-ep="${i}" aria-label="${esc(title)}">
+    <span class="ep-img${img?"":" none"}">${pic}<span class="ep-play" aria-hidden="true"></span></span>
+    <span class="ep-body"><span class="ep-title">${esc(title)}</span>
+    <span class="ep-meta">${date} · ${Math.max(1,Math.round(dur/60))} ${esc(t("min"))}</span>
+    ${desc?`<span class="ep-desc">${esc(desc)}</span>`:""}</span></button></article>`;
+}
+function podGrid(){
+  if(!EPS_LOADED) return `<p class="pod-count">…</p>`;
+  const list=podList();
+  return `<p class="pod-count">${list.length} ${esc(t("eps"))}</p>
+    <div class="eps">${list.slice(0,podShown).map(epCard).join("")}</div>
+    ${list.length>podShown?`<div class="more"><button class="btn ghost" type="button" id="podMore">${esc(t("showMore"))}</button></div>`:""}`;
+}
+function viewPodcast(){
+  const chips=[["all",t("all")],["kappa",t("kappa")],["geoffrey",t("geoffrey")],["mail",t("mail")],["other",t("other")]];
+  const chars=lang==="zh"?"img/chars-zh.jpg":"img/chars-en.jpg";
+  return `${st("Podcast","Poca村長的故事時間","h1")}
+    <div class="pod-hero">
+      <img src="https://d3mww1g1pfq2pt.cloudfront.net/Avatar/cklabznee4z8p08728tgfauzn/1614073794899.jpg" alt="Poca村長的故事時間">
+      <div><h2>Poca村長的故事時間</h2><p>${esc(t("podIntro"))}</p>
+        <div class="btns"><a class="btn" href="${POD_URL}" target="_blank" rel="noopener">${ICONS.pod} ${esc(t("listenAll"))}</a>
+        <a class="btn" href="${YT_CHANNEL}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytChannel"))}</a></div></div>
+    </div>
+    <section class="kappa-intro">
+      <img src="img/kappa.jpg" alt="${lang==="zh"?"小河童":"Little Kappa"}" width="900" height="841">
+      <div>${st("About Kappa's Diary","關於小河童日記","h2")}${KAPPA_INTRO[lang].map(p=>`<p>${esc(p)}</p>`).join("")}</div>
+    </section>
+    <section class="chars">
+      ${st("Characters","人物介紹","h2")}
+      <button class="chars-img" type="button" data-chars="${chars}" aria-label="${lang==="zh"?"放大人物關係圖":"Enlarge the character map"}"><img src="${chars}" alt="${lang==="zh"?"小河童日記人物關係圖":"Kappa's Diary character map"}" width="2000" height="2512" loading="lazy"></button>
+    </section>
+    <section class="cat">${st("Episodes","每一集","h2")}
+    <div class="pod-tools" role="group" aria-label="Filter">
+      ${chips.map(([k,l])=>`<button class="chip" type="button" data-pf="${k}" aria-pressed="${podFilter===k}">${esc(l)}</button>`).join("")}
+      <input id="podSearch" type="search" placeholder="${esc(t("search"))}" value="${esc(podQuery)}" aria-label="${esc(t("search"))}">
+    </div>
+    <div id="podGrid">${podGrid()}</div></section>`;
+}
+function refreshPod(){const g=document.getElementById("podGrid"); if(g) g.innerHTML=podGrid();}
+document.addEventListener("input",e=>{if(e.target.id==="podSearch"){podQuery=e.target.value;podShown=24;refreshPod();}});
+
+/* episode player */
+function openEp(i){
+  const e=EPS[i]; if(!e) return;
+  const [title,date,dur,slug,story,desc,img,audio,yt,gal]=e;
+  const d=document.getElementById("epdlg");
+  d.classList.toggle("has-gal",!!(gal&&gal.length));
+  if(gal&&gal.length){
+    let k=0;
+    const art=d.querySelector(".epd-art");
+    const draw=()=>{art.innerHTML=`<img src="${gal[k]}" alt="${esc(title)} ${k+1}">
+      ${gal.length>1?`<button class="gal-btn prev" type="button" aria-label="上一張" ${k===0?"disabled":""}>←</button><button class="gal-btn next" type="button" aria-label="下一張" ${k===gal.length-1?"disabled":""}>→</button>
+      <span class="gal-count">${k+1} / ${gal.length}</span>`:""}`;
+      const p=art.querySelector(".prev"),n=art.querySelector(".next");
+      if(p)p.onclick=()=>{if(k>0){k--;draw();}}; if(n)n.onclick=()=>{if(k<gal.length-1){k++;draw();}};};
+    draw();
+    d.onkeydown=ev=>{if(ev.key==="ArrowLeft"&&k>0){k--;draw();} if(ev.key==="ArrowRight"&&k<gal.length-1){k++;draw();}};
+    let sx=null; art.ontouchstart=ev=>{sx=ev.touches[0].clientX}; art.ontouchend=ev=>{if(sx==null)return;const dx=ev.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&k<gal.length-1)k++;else if(dx>0&&k>0)k--;draw();}sx=null;};
+  } else {
+    d.onkeydown=null;
+    d.querySelector(".epd-art").innerHTML=img?`<img src="${img}" alt="">`:`<img class="noimg" src="img/bird.png" alt="">`;
+  }
+  d.querySelector(".epd-info").innerHTML=`<p class="ep-meta">${date} · ${Math.max(1,Math.round(dur/60))} ${esc(t("min"))}</p>
+    <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
+    <audio controls preload="none" src="${audio}"></audio>
+    <p class="epd-note" hidden>${esc(t("audioNote"))}</p>
+    <div class="btns"><a class="btn" href="https://open.firstory.me/story/${story}" target="_blank" rel="noopener">${ICONS.pod} Firstory</a>
+    ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}</div>`;
+  const au=d.querySelector("audio"); au.addEventListener("error",()=>{d.querySelector(".epd-note").hidden=false;},{once:true});
+  if(!d.open) d.showModal();
+}
+/* ---------- router ---------- */
+const VIEWS={about:viewAbout,works:viewWorks,podcast:viewPodcast};
+const SUB=new Set(["cat-books","cat-series","cat-singles","cat-anim",...BOOKS.map(b=>b.id),...SERIES.map(s=>s.id),...ANIM_GROUPS.map(s=>s.id)]);
+let current=null;
+function render(force){
+  const h=(location.hash||"#home").slice(1);
+  const epm=h.match(/^ep(\d+)$/); let epIdx=-1;
+  if(epm){const n=epm[1]; epIdx=n.length===8?EPS.findIndex(e=>e[1].replace(/-/g,"")===n):EPS.findIndex(e=>new RegExp("^EP\\s*0*"+n+"(?!\\d)","i").test(e[0]));}
+  const route=epm?"podcast":VIEWS[h]?h:(SUB.has(h)?"works":"home");
+  if(route!==current||force){
+    LB_SETS={};setId=0;
+    document.getElementById("app").innerHTML = route==="home" ? viewGate() : frame(route,VIEWS[route]());
+    if(route!==current && !SUB.has(h)) window.scrollTo(0,0);
+    current=route;
+  }
+  if(SUB.has(h)){const el=document.getElementById(h); if(el) el.scrollIntoView();}
+  const dlg=document.getElementById("epdlg"); if(epIdx>=0) openEp(epIdx); else if(dlg&&dlg.open) dlg.close();
+  document.documentElement.lang=lang==="zh"?"zh-Hant":"en";
+}
+window.addEventListener("hashchange",()=>render());
+function setLang(l){lang=l;try{localStorage.setItem("poca-lang",lang);}catch(e){} const y=scrollY; render(true); scrollTo(0,y);}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-lang]"); if(b){lang=b.dataset.lang;try{localStorage.setItem("poca-lang",lang);}catch(err){} if(location.hash==="#about")render(true); else location.hash="#about"; return;}
+  const pf=e.target.closest("[data-pf]"); if(pf){podFilter=pf.dataset.pf;podShown=24;document.querySelectorAll("[data-pf]").forEach(x=>x.setAttribute("aria-pressed",x===pf));refreshPod();return;}
+  if(e.target.id==="podMore"){podShown+=24;refreshPod();return;}
+  const ep=e.target.closest("[data-ep]"); if(ep){openEp(+ep.dataset.ep);return;}
+  const ch=e.target.closest("[data-chars]"); if(ch){LB_SETS.chars=[{src:ch.dataset.chars,zh:"小河童日記人物關係圖",en:"Kappa's Diary character map"}];lbSet="chars";lbI=0;showLB();lb.showModal();return;}
+  if(e.target.closest(".epd-close")||e.target.id==="epdlg"){document.getElementById("epdlg").close();return;}
+
+  const sl=e.target.closest("[data-setlang]"); if(sl){if(sl.dataset.setlang!==lang)setLang(sl.dataset.setlang);return;}
+  const cp=e.target.closest("[data-copy]"); if(cp){
+    const k=cp.dataset.copy;
+    navigator.clipboard.writeText(CONTACT[k]).then(()=>{cp.textContent=t("copied")}).catch(()=>{
+      const r=document.createRange();r.selectNodeContents(document.getElementById("mail-"+k));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);});
+    return;
+  }
+  const tl=e.target.closest(".tile"); if(tl){lbSet=tl.dataset.set;lbI=+tl.dataset.i;showLB();lb.showModal();}
+});
+
+/* ---------- lightbox ---------- */
+const lb=document.getElementById("lb"),lbMedia=document.getElementById("lbMedia"),lbCap=document.getElementById("lbCap");
+let lbSet=null,lbI=0;
+function showLB(){
+  const items=LB_SETS[lbSet], it=items[lbI];
+  lbMedia.innerHTML = it.video
+    ? `<video src="${it.video}" poster="${it.thumb}" ${it.loop?"autoplay muted loop":"controls autoplay"} playsinline></video>`
+    : `<img src="${it.src}" alt="${esc(it[lang])}">`;
+  lbCap.innerHTML=`${esc(it[lang])}${items.length>1?`<small>${lbI+1} / ${items.length}</small>`:""}`;
+  ["lbPrev","lbPrevM"].forEach(id=>document.getElementById(id).disabled=lbI===0);
+  ["lbNext","lbNextM"].forEach(id=>document.getElementById(id).disabled=lbI===items.length-1);
+}
+function step(d){const n=lbI+d;if(n>=0&&n<LB_SETS[lbSet].length){lbI=n;showLB();}}
+document.getElementById("lbClose").onclick=()=>lb.close();
+document.getElementById("epdlg").addEventListener("close",()=>{const a=document.querySelector("#epdlg audio"); if(a) a.pause();});
+lb.addEventListener("close",()=>{lbMedia.innerHTML="";});
+lb.addEventListener("click",e=>{if(e.target===lb||e.target.classList.contains("lb-media")||e.target.classList.contains("lb-stage"))lb.close();});
+["lbPrev","lbPrevM"].forEach(id=>document.getElementById(id).onclick=()=>step(-1));
+["lbNext","lbNextM"].forEach(id=>document.getElementById(id).onclick=()=>step(1));
+lb.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")step(-1);if(e.key==="ArrowRight")step(1);});
+let tx=null;lb.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
+lb.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)step(dx<0?1:-1);tx=null;});
+
+render();
+fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.episodes||[];EPS_LOADED=true;if(current==="podcast")render(true);}).catch(()=>{EPS_LOADED=true;if(current==="podcast")render(true);});
+</script>
+</body>
+</html>
