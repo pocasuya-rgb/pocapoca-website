@@ -33,7 +33,7 @@ POD_SRC = os.path.join(ROOT, "podcast插畫")
 RSS_URL = "https://feed.firstory.me/rss/user/cklabznee4z8p08728tgfauzn"
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 IMG_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
-MAX_SIDE = 1800
+MAX_SIDE = 1500
 
 
 def load_json(path, default):
