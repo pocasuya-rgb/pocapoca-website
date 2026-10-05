@@ -8,7 +8,7 @@
 <meta property="og:title" content="Pocapoca 故事村 Pocapoca Story Village">
 <meta property="og:description" content="繪本／插畫工作者 Poca 的作品與 Podcast「Poca村長的故事時間」。">
 <meta property="og:image" content="img/map-hd.webp">
-<link rel="icon" href="img/bird.png">
+<link rel="icon" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
@@ -66,17 +66,18 @@ button{font:inherit;color:inherit}
 .gate{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;padding-inline:var(--gutter);overflow:hidden}
 .mapwrap{position:absolute;right:0;bottom:0;width:min(76vw,calc(100svh * 1.3373));aspect-ratio:3350/2505}
 .mapwrap .map{width:100%;height:100%;display:block}
-.mapwrap .eboat{position:absolute;width:13%;left:6%;top:68%;animation:bob 5s ease-in-out infinite}
+.mapwrap .eboat{position:absolute;width:13%;left:15%;top:77%;animation:bob 5s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
 .gate .flight{position:relative;z-index:2;display:grid;justify-items:start;gap:18px;padding-block:clamp(60px,12vh,140px) 40px;width:max-content;max-width:100%;margin-left:0}
+@media (min-width:821px){.gate .flight{margin-left:clamp(0px,5.5vw,110px)}}
 .gate .bird-row{display:flex;align-items:center;gap:clamp(8px,2vw,24px)}
 .gate .bird{width:clamp(200px,24vw,340px);animation:fly 6s ease-in-out infinite}
 .bubbles{display:grid;gap:12px}
-.bubble-btn{width:clamp(90px,9vw,120px);aspect-ratio:1231/1090;background:url(img/bubble-white.png) center/contain no-repeat;border:0;cursor:pointer;display:grid;place-items:center;padding:0 0 10% 12%;font-size:clamp(1.25rem,1rem + .7vw,1.75rem);color:var(--ribbon);transition:transform .2s}
+.bubble-btn{width:clamp(90px,9vw,120px);aspect-ratio:1231/1090;background:url(img/bubble-white.webp) center/contain no-repeat;border:0;cursor:pointer;display:grid;place-items:center;padding:0 0 10% 12%;font-size:clamp(1.25rem,1rem + .7vw,1.75rem);color:var(--ribbon);transition:transform .2s}
 .bubble-btn.zh{font-family:var(--zh);font-weight:500}
 .bubble-btn.en-b{font-family:var(--en);font-weight:700;font-size:clamp(1.8rem,1.4rem + 1vw,2.5rem);background:none;position:relative;isolation:isolate}
 .bubble-btn.en-b{padding:14% 0 0 8%}
-.bubble-btn.en-b::before{content:"";position:absolute;inset:0;background:url(img/bubble-white.png) center/contain no-repeat;transform:rotate(30deg);z-index:-1}
+.bubble-btn.en-b::before{content:"";position:absolute;inset:0;background:url(img/bubble-white.webp) center/contain no-repeat;transform:rotate(30deg);z-index:-1}
 .bubble-btn:hover{transform:scale(1.06)}
 
 @keyframes fly{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
@@ -121,7 +122,7 @@ button{font:inherit;color:inherit}
 .intro-m{display:none}
 .notice{position:relative;padding-bottom:clamp(30px,5vw,60px)}
 .scene{position:relative;max-width:900px;margin:0 auto;padding-bottom:4cqw;container-type:inline-size}
-.board{position:relative;width:88%;aspect-ratio:985/676;margin:0 auto;background:url(img/board.png) center/100% 100% no-repeat;padding:7.5% 8% 0;container-type:inline-size;z-index:1}
+.board{position:relative;width:88%;aspect-ratio:985/676;margin:0 auto;background:url(img/board.webp) center/100% 100% no-repeat;padding:7.5% 8% 0;container-type:inline-size;z-index:1}
 .board .stitle{margin-bottom:3cqi;padding-bottom:1.5cqi}
 .board .stitle .en{font-size:clamp(2.2rem,7.4cqi,3.7rem)}
 .board .stitle .zh{font-size:clamp(1.3rem,4.1cqi,2.2rem);font-weight:700}
@@ -380,7 +381,7 @@ const BOOKS=[
  {id:"book1",zh:"繪本《轉學的第一天》",en:"The First Day at a New School",note:{zh:"小河童成長系列 1｜小光點出版社，2019",en:"Little Kappa series, book 1 · 2019"},dir:"繪本《轉學的第一天》",files:["01.jpg","05.jpg","18.jpg"]},
  {id:"book2",zh:"繪本《小河童，幫幫我》",en:"Little Kappa, Help Me!",note:{zh:"小河童成長系列 2｜小光點出版社，2020",en:"Little Kappa series, book 2 · 2020"},dir:"繪本《小河童，幫幫我》",files:["01.jpg","07.jpg","17.jpg"]},
  {id:"book3",zh:"繪本《耳朵缺一角的啾啾》",en:"Chuchu and the Nicked Ear",note:{zh:"小河童成長系列 3｜小光點出版社，2020",en:"Little Kappa series, book 3 · 2020"},dir:"繪本《耳朵缺一角的啾啾》",files:["01.jpg","03.jpg","08.jpg","18.jpg"]},
- {id:"book4",zh:"繪本《小河童生氣了》",en:"Little Kappa Gets Angry",note:{zh:"小河童成長系列",en:"Little Kappa series"},dir:"繪本《小河童生氣了》",files:["01.jpg","03.jpg","10.jpg"]}
+ {id:"book4",zh:"繪本《小河童生氣了》",en:"Little Kappa Gets Angry",note:{zh:"小河童成長系列 4｜小光點出版社，2022",en:"Little Kappa series, book 4 · 2022"},dir:"繪本《小河童生氣了》",files:["01.jpg","03.jpg","10.jpg"]}
 ];
 const SERIES=[
  {id:"kappasummer",zh:"小河童的暑假",en:"Little Kappa's Summer",dir:"小河童的暑假",files:["01.jpg","02.jpg","03.jpg"]},
@@ -503,7 +504,7 @@ function viewGate(){
     <div class="mapwrap"><img class="map" src="img/map-hd.webp" alt="Pocapoca 故事村地圖 / Map of Pocapoca Story Village" width="2400" height="1795"><img class="eboat" src="img/elephant-boat.png" alt=""></div>
     <div class="flight">
       <div class="bird-row">
-        <img class="bird" src="img/bird.png" alt="" width="700" height="700">
+        <img class="bird" src="img/bird.webp" alt="" width="700" height="700">
         <div class="bubbles" role="group" aria-label="Language 語言">
           <button class="bubble-btn zh" type="button" data-lang="zh">中文</button>
           <button class="bubble-btn en-b" type="button" data-lang="en">EN</button>
@@ -520,7 +521,7 @@ function frame(route,inner){
   return `<header class="sky">
       <img class="s-balloon" src="img/balloon.png" alt="">
       <a class="title en" href="#home"><img class="s-star" src="img/star.png" alt="">Pocapoca Story Village<small>Pocapoca 故事村</small></a>
-      <img class="s-bird" src="img/bird.png" alt="" width="700" height="700">
+      <img class="s-bird" src="img/bird.webp" alt="" width="700" height="700">
       <p class="welcome en">Welcome</p>
       <span class="langsw" role="group" aria-label="Language 語言"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3z"/></svg><button type="button" data-setlang="zh" aria-pressed="${lang==="zh"}">中文</button><button type="button" class="en-opt" data-setlang="en" aria-pressed="${lang==="en"}">EN</button></span>
     </header>
@@ -620,7 +621,7 @@ function podList(){
 }
 function epCard({e,i}){
   const [title,date,dur,slug,story,desc,img]=e;
-  const pic=img?`<img src="${img}" alt="" loading="lazy" width="266" height="266">`:`<img class="noimg" src="img/bird.png" alt="">`;
+  const pic=img?`<img src="${img}" alt="" loading="lazy" width="266" height="266">`:`<img class="noimg" src="img/bird.webp" alt="">`;
   return `<article class="ep"><button class="ep-open" type="button" data-ep="${i}" aria-label="${esc(title)}">
     <span class="ep-img${img?"":" none"}">${pic}<span class="ep-play" aria-hidden="true"></span></span>
     <span class="ep-body"><span class="ep-title">${esc(title)}</span>
@@ -681,7 +682,7 @@ function openEp(i){
     let sx=null; art.ontouchstart=ev=>{sx=ev.touches[0].clientX}; art.ontouchend=ev=>{if(sx==null)return;const dx=ev.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&k<gal.length-1)k++;else if(dx>0&&k>0)k--;draw();}sx=null;};
   } else {
     d.onkeydown=null;
-    d.querySelector(".epd-art").innerHTML=img?`<img src="${img}" alt="">`:`<img class="noimg" src="img/bird.png" alt="">`;
+    d.querySelector(".epd-art").innerHTML=img?`<img src="${img}" alt="">`:`<img class="noimg" src="img/bird.webp" alt="">`;
   }
   d.querySelector(".epd-info").innerHTML=`<p class="ep-meta">${date} · ${Math.max(1,Math.round(dur/60))} ${esc(t("min"))}</p>
     <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
