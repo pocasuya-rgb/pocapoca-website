@@ -2,9 +2,9 @@
 
 | 集數 | 舊網址 | 張數 | 狀態 |
 |---|---|---|---|
-| EP184 | /single-post/autumn184 | – | 已經有資料夾，略過 |
-| EP183 | /single-post/mooncake183 | – | 已經有資料夾，略過 |
-| EP182 | /single-post/ballet182 | – | 已經有資料夾，略過 |
+| EP184 | /single-post/autumn184 | 5 | 完成 |
+| EP183 | /single-post/mooncake183 | 13 | 完成 |
+| EP182 | /single-post/ballet182 | 5 | 完成 |
 | EP181 | /single-post/dragonboat181 | 1 | 完成 |
 | EP180 | /single-post/sea180 | 1 | 完成 |
 | EP179 | /single-post/unicorn179 | 4 | 完成 |
@@ -73,7 +73,7 @@
 | EP103 | /single-post/foodcar103 | 3 | 完成 |
 | EP102 | /single-post/watermelon102 | 4 | 完成 |
 | EP101 | /single-post/BD101 | 4 | 完成 |
-| EP99 | /single-post/tark99 | 4 | 完成 |
+| EP99 | /single-post/tark99 | – | 已經有資料夾，略過 |
 | EP98 | /single-post/gallery98 | 1 | 完成 |
 | EP97 | /single-post/mother97 | 7 | 完成 |
 | EP96 | /single-post/jogging96 | 1 | 完成 |
@@ -99,20 +99,20 @@
 | EP73 | /single-post/boat73 | 1 | 完成 |
 | EP72 | /single-post/mooncake72 | 1 | 完成 |
 | 20220904-2 | /single-post/mailbox10 | 1 | 完成 |
-| EP71 | /single-post/cloud71 | 2 | 完成 |
+| EP71 | /single-post/cloud71 | – | 已經有資料夾，略過 |
 | EP70 | /single-post/cafe70 | 1 | 完成 |
-| EP69 | /single-post/father69 | 4 | 完成 |
+| EP69 | /single-post/father69 | – | 已經有資料夾，略過 |
 | EP68 | /single-post/house68 | 1 | 完成 |
 | EP67 | /single-post/pool67 | 1 | 完成 |
-| EP66 | /single-post/silver_moon66 | 1 | 完成 |
+| EP66 | /single-post/silver_moon66 | – | 已經有資料夾，略過 |
 | EP65 | /single-post/_hb65 | 1 | 完成 |
-| EP64 | /single-post/hotballon | 5 | 完成 |
-| 20220603 | /stegg | 1 | 完成 |
+| EP64 | /single-post/hotballon | – | 已經有資料夾，略過 |
+| 20220603 | /stegg | – | 已經有資料夾，略過 |
 | EP63 | /single-post/letter63 | 1 | 完成 |
 | EP62 | /single-post/pizza62 | 3 | 完成 |
 | EP61 | /single-post/mother61 | 1 | 完成 |
 | EP60 | /single-post/cat60 | 4 | 完成 |
-| EP59 | /single-post/flower59 | 2 | 完成 |
+| EP59 | /single-post/flower59 | – | 已經有資料夾，略過 |
 | EP58 | /single-post/Jessie58 | 1 | 完成 |
 | EP57 | /single-post/dancer57 | 3 | 完成 |
 | EP56 | /single-post/midnight56 | 1 | 完成 |
@@ -125,7 +125,7 @@
 | EP50 | /single-post/snowman | 1 | 完成 |
 | 20220116 | /giant2 | 1 | 完成 |
 | EP49 | /giant6 | 1 | 完成 |
-| EP48 | /giant5 | 1 | 完成 |
+| EP48 | /giant5 | – | 已經有資料夾，略過 |
 | 20211223 | /j-christmas | 1 | 完成 |
 | EP47 | /giant4 | 1 | 完成 |
 | EP46 | /giant3 | 1 | 完成 |
@@ -144,7 +144,7 @@
 | EP34 | /pomelo | 3 | 完成 |
 | EP33 | /pomelo | 3 | 完成 |
 | EP32 | /pomelo | 3 | 完成 |
-| EP31 | /kappafather | 3 | 完成 |
+| EP31 | /kappafather | – | 已經有資料夾，略過 |
 | 20210801 | /juicemixer | 1 | 完成 |
 | EP30 | /juicemixer | 1 | 完成 |
 | EP29 | /drawingwork | 3 | 完成 |
@@ -157,7 +157,7 @@
 | EP23 | /kappasick | 1 | 完成 |
 | EP22 | /swimming | 3 | 完成 |
 | EP21 | /iceshaved | 2 | 完成 |
-| EP20 | /stegg | 1 | 完成 |
+| EP20 | /stegg | – | 已經有資料夾，略過 |
 | EP19 | /tomato | 3 | 完成 |
 | EP18 | /kappacooking | 1 | 完成 |
 | EP17 | /forest | 3 | 完成 |
