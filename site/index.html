@@ -290,8 +290,7 @@ dialog.lb::backdrop{background:rgba(26,34,40,.97)}
 .lb-nav-m{display:none;justify-content:center;gap:16px;padding-top:8px}
 
 @media (max-width:820px){
-  /* sea and map go on behind Safari's bottom toolbar */
-  .gate{align-content:space-between;min-height:0;height:100svh;height:100lvh;padding-block:max(16px,env(safe-area-inset-top,0px)) 0}
+  .gate{align-content:space-between;min-height:100svh;padding-block:max(16px,env(safe-area-inset-top,0px)) 0}
   .gate .flight{width:100%;margin:0;padding-block:clamp(16px,4vh,48px) 0}
   .gate .bird{width:min(44vw,210px)}
   .gate .go{margin-top:6px}
@@ -765,7 +764,7 @@ function fitMap(){
   const g=document.querySelector(".gate"),f=g&&g.querySelector(".flight");
   if(!g||!f) return;
   if(!matchMedia("(max-width:820px)").matches){g.style.removeProperty("--mapmax");return;}
-  const screenH=g.clientHeight;
+  const screenH=Math.min(window.innerHeight,document.documentElement.clientHeight);
   const free=screenH-(f.getBoundingClientRect().bottom-g.getBoundingClientRect().top)-8;
   g.style.setProperty("--mapmax",Math.max(220,free*3350/2505)+"px");
 }
