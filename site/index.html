@@ -41,7 +41,8 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html,body{overflow-x:clip}
+html,html{-webkit-text-size-adjust:100%;text-size-adjust:100%} /* stop iPhone landscape from enlarging some text */
+body{overflow-x:clip}
 body{margin:0;background:var(--sea) url(img/texture.jpg) center top/1600px auto repeat;background-attachment:fixed;color:var(--ink);font-family:var(--zh);font-size:var(--step-0);line-height:1.8}
 img,video{max-width:100%;height:auto;display:block}
 a{color:var(--teal);text-underline-offset:3px}
@@ -148,6 +149,8 @@ button{font:inherit;color:inherit}
 .cv .wide{grid-column:1/-1}
 .cv ul{list-style:none;margin:0;padding:0}
 .cv li{display:grid;grid-template-columns:8.4em minmax(0,1fr);gap:10px;padding:5px 0;font-size:.93em;line-height:1.6}
+.cv li > span{text-wrap:pretty}
+.cv .nw{white-space:nowrap}
 .cv time{font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
 
 /* ---------- works ---------- */
@@ -327,6 +330,7 @@ dialog.lb::backdrop{background:rgba(26,34,40,.97)}
   /* map as big as possible but always fully inside the visible screen (also on short phones) */
   .mapwrap{--mw:min(140%,var(--mapmax,140%));width:var(--mw);margin:8px calc(-1 * var(--gutter)) 0 calc(100% + var(--gutter) - var(--mw))}
   .mapwrap .eboat{left:30%;top:82%;width:12%}
+  .cv .pub{display:block;color:var(--ink-soft)} /* publisher on its own line on phones */
   .label{flex-wrap:nowrap;white-space:nowrap;gap:8px;padding:6px 14px 8px}
   .label .en{font-size:clamp(1.25rem,6.2vw,1.7rem)}
   .label .zh{font-size:clamp(.95rem,4.3vw,1.15rem)}
@@ -591,8 +595,15 @@ function footer(){
 }
 
 /* ---------- about ---------- */
+/* keep a short ending such as 「小光點出版社」 together, so no single character drops to the next line */
+function cvText(t){
+  const m=t.match(/^(.*[》」）)])\s*([^》」）)]{1,14})$/);
+  if(m) return `${esc(m[1])}<span class="nw${/出版/.test(m[2])?" pub":""}">${esc(m[2])}</span>`;
+  const k=[...t]; if(k.length>8) return `${esc(k.slice(0,-4).join(""))}<span class="nw">${esc(k.slice(-4).join(""))}</span>`;
+  return esc(t);
+}
 function cvList(k,en,zh,wide){
-  return `<div class="${wide?"wide":""}">${st(en,zh,"h3")}<ul>${CV[k].map(([d,x])=>`<li><time>${d}</time><span>${esc(x[lang])}</span></li>`).join("")}</ul></div>`;
+  return `<div class="${wide?"wide":""}">${st(en,zh,"h3")}<ul>${CV[k].map(([d,x])=>`<li><time>${d}</time><span>${cvText(x[lang])}</span></li>`).join("")}</ul></div>`;
 }
 function viewAbout(){
   return `<section class="notice"><div class="scene">
