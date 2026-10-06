@@ -314,7 +314,6 @@ dialog.lb::backdrop{background:rgba(26,34,40,.92)}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
 }
-img,video{-webkit-user-drag:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 </style>
 </head>
 <body>
@@ -493,7 +492,7 @@ const registerSet=items=>{const id="s"+(setId++);LB_SETS[id]=items;return id;};
 function tile(it,set,idx){
   const r=(it.w/it.h).toFixed(3), title=it[lang];
   const media=(it.video&&it.loop)
-    ?`<video controlslist="nodownload" disablepictureinpicture src="${it.video}" poster="${it.thumb}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
+    ?`<video src="${it.video}" poster="${it.thumb}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
     :`<img src="${it.thumb}" alt="${esc(title)}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async">`;
   const play=(it.video&&!it.loop)?`<span class="play" aria-hidden="true"></span>`:"";
   return `<button class="tile" type="button" style="--r:${r}" data-set="${set}" data-i="${idx}" aria-label="${esc(title)}">${media}${play}<span class="cap">${esc(title)}</span></button>`;
@@ -739,7 +738,7 @@ let lbSet=null,lbI=0;
 function showLB(){
   const items=LB_SETS[lbSet], it=items[lbI];
   lbMedia.innerHTML = it.video
-    ? `<video controlslist="nodownload" disablepictureinpicture src="${it.video}" poster="${it.thumb}" ${it.loop?"autoplay muted loop":"controls autoplay"} playsinline></video>`
+    ? `<video src="${it.video}" poster="${it.thumb}" ${it.loop?"autoplay muted loop":"controls autoplay"} playsinline></video>`
     : `<img src="${it.src}" alt="${esc(it[lang])}">`;
   lbCap.innerHTML=`${esc(it[lang])}${items.length>1?`<small>${lbI+1} / ${items.length}</small>`:""}`;
   ["lbPrev","lbPrevM"].forEach(id=>document.getElementById(id).disabled=lbI===0);
@@ -758,10 +757,6 @@ lb.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[
 
 render();
 fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.episodes||[];EPS_LOADED=true;if(current==="podcast")render(true);}).catch(()=>{EPS_LOADED=true;if(current==="podcast")render(true);});
-</script>
-<script>
-/* 保護圖片：擋右鍵、拖曳、長按存圖 */
-["contextmenu","dragstart"].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest("img,video,.lb-media,.epd-art,.tile"))e.preventDefault();},{capture:true}));
 </script>
 </body>
 </html>
