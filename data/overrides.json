@@ -1,3 +1,20 @@
 {
-  "EP180": {"slug": "/single-post/sea180"}
+  "EP180": {
+    "slug": "/single-post/sea180"
+  },
+  "EP137": {
+    "slug": "/single-post/blue137"
+  },
+  "EP138": {
+    "slug": "/single-post/bluehat138"
+  },
+  "EP139": {
+    "slug": "/single-post/dove139"
+  },
+  "EP140": {
+    "slug": "/single-post/shop140"
+  },
+  "EP142": {
+    "slug": "/single-post/ballon142"
+  }
 }
