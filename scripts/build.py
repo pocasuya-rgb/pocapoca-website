@@ -108,6 +108,14 @@ def parse_rss(xml_bytes, overrides):
     return eps
 
 
+def is_blank(im):
+    """True for an almost single-colour picture (an empty page background)."""
+    from PIL import ImageStat
+    t = im.convert("RGB")
+    t.thumbnail((64, 64))
+    return sum(ImageStat.Stat(t).stddev) / 3 < 8
+
+
 def copy_gallery(key):
     """Resize images in podcast插畫/<key>/ into _site/pod/<key>/ and return their paths."""
     src = os.path.join(POD_SRC, key)
@@ -120,10 +128,15 @@ def copy_gallery(key):
     dst = os.path.join(OUT, "pod", key)
     os.makedirs(dst, exist_ok=True)
     out = []
-    for i, f in enumerate(files, 1):
-        name = f"{i:02d}.jpg"
+    i = 0
+    for f in files:
         try:
             im = Image.open(os.path.join(src, f))
+            if is_blank(im):   # plain page background picked up from Wix, not an illustration
+                print(f"  - skipped blank background {key}/{f}")
+                continue
+            i += 1
+            name = f"{i:02d}.jpg"
             im = ImageOps.exif_transpose(im)
             if im.mode == "CMYK" or im.mode in ("RGBA", "LA", "P"):
                 im = im.convert("RGB")
