@@ -270,7 +270,15 @@ dialog.lb::backdrop{background:rgba(26,34,40,.92)}
 .lb-bar{display:flex;justify-content:flex-end}
 .lb-stage{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;min-height:0}
 .lb-media{display:grid;place-items:center;height:100%;min-height:0}
+.lb-media{overflow:hidden}
 .lb-media img,.lb-media video{max-height:100%;max-width:100%;object-fit:contain}
+.lb-media img{touch-action:none;transform-origin:center;transition:transform .15s ease-out;will-change:transform}
+.lb-media img.zoomed{cursor:grab}
+.lb-media img.pinching{transition:none}
+.lb-hint{color:#f6f1e4;opacity:.6;font-size:.75rem;text-align:center;padding-top:4px}
+.epd-art img{cursor:zoom-in}
+.epd-zoom{position:absolute;bottom:10px;right:10px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(246,241,228,.92);color:var(--ribbon);cursor:pointer;display:grid;place-items:center;font-size:1.1rem}
+.epd-art{position:relative}
 .lb-btn{background:transparent;border:1.5px solid #f6f1e4;color:#f6f1e4;border-radius:999px;width:44px;height:44px;cursor:pointer;font-size:1.2rem;display:grid;place-items:center}
 .lb-btn:hover{background:#f6f1e4;color:#2a2620}
 .lb-btn[disabled]{opacity:.25;cursor:default}
@@ -314,6 +322,7 @@ dialog.lb::backdrop{background:rgba(26,34,40,.92)}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
 }
+img,video{-webkit-user-drag:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 </style>
 </head>
 <body>
@@ -492,7 +501,7 @@ const registerSet=items=>{const id="s"+(setId++);LB_SETS[id]=items;return id;};
 function tile(it,set,idx){
   const r=(it.w/it.h).toFixed(3), title=it[lang];
   const media=(it.video&&it.loop)
-    ?`<video src="${it.video}" poster="${it.thumb}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
+    ?`<video controlslist="nodownload" disablepictureinpicture src="${it.video}" poster="${it.thumb}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
     :`<img src="${it.thumb}" alt="${esc(title)}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async">`;
   const play=(it.video&&!it.loop)?`<span class="play" aria-hidden="true"></span>`:"";
   return `<button class="tile" type="button" style="--r:${r}" data-set="${set}" data-i="${idx}" aria-label="${esc(title)}">${media}${play}<span class="cap">${esc(title)}</span></button>`;
@@ -674,15 +683,19 @@ function openEp(i){
     const art=d.querySelector(".epd-art");
     const draw=()=>{art.innerHTML=`<img src="${gal[k]}" alt="${esc(title)} ${k+1}">
       ${gal.length>1?`<button class="gal-btn prev" type="button" aria-label="上一張" ${k===0?"disabled":""}>←</button><button class="gal-btn next" type="button" aria-label="下一張" ${k===gal.length-1?"disabled":""}>→</button>
-      <span class="gal-count">${k+1} / ${gal.length}</span>`:""}`;
+      <span class="gal-count">${k+1} / ${gal.length}</span>`:""}<button class="epd-zoom" type="button" aria-label="全螢幕">⤢</button>`;
       const p=art.querySelector(".prev"),n=art.querySelector(".next");
       if(p)p.onclick=()=>{if(k>0){k--;draw();}}; if(n)n.onclick=()=>{if(k<gal.length-1){k++;draw();}};};
+    art.onclick=ev=>{if(ev.target.closest(".gal-btn"))return; LB_SETS.ep=gal.map((src,j)=>({src,zh:title,en:title}));lbSet="ep";lbI=k;showLB();lb.showModal();};
     draw();
     d.onkeydown=ev=>{if(ev.key==="ArrowLeft"&&k>0){k--;draw();} if(ev.key==="ArrowRight"&&k<gal.length-1){k++;draw();}};
     let sx=null; art.ontouchstart=ev=>{sx=ev.touches[0].clientX}; art.ontouchend=ev=>{if(sx==null)return;const dx=ev.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&k<gal.length-1)k++;else if(dx>0&&k>0)k--;draw();}sx=null;};
   } else {
     d.onkeydown=null;
-    d.querySelector(".epd-art").innerHTML=img?`<img src="${img}" alt="">`:`<img class="noimg" src="img/bird.webp" alt="">`;
+    const art=d.querySelector(".epd-art");
+    art.innerHTML=img?`<img src="${img}" alt=""><button class="epd-zoom" type="button" aria-label="全螢幕">⤢</button>`:`<img class="noimg" src="img/bird.webp" alt="">`;
+    art.ontouchstart=art.ontouchend=null;
+    art.onclick=img?()=>{LB_SETS.ep=[{src:img,zh:title,en:title}];lbSet="ep";lbI=0;showLB();lb.showModal();}:null;
   }
   d.querySelector(".epd-info").innerHTML=`<p class="ep-meta">${date} · ${Math.max(1,Math.round(dur/60))} ${esc(t("min"))}</p>
     <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
@@ -738,9 +751,10 @@ let lbSet=null,lbI=0;
 function showLB(){
   const items=LB_SETS[lbSet], it=items[lbI];
   lbMedia.innerHTML = it.video
-    ? `<video src="${it.video}" poster="${it.thumb}" ${it.loop?"autoplay muted loop":"controls autoplay"} playsinline></video>`
+    ? `<video controlslist="nodownload" disablepictureinpicture src="${it.video}" poster="${it.thumb}" ${it.loop?"autoplay muted loop":"controls autoplay"} playsinline></video>`
     : `<img src="${it.src}" alt="${esc(it[lang])}">`;
-  lbCap.innerHTML=`${esc(it[lang])}${items.length>1?`<small>${lbI+1} / ${items.length}</small>`:""}`;
+  lbCap.innerHTML=`${esc(it[lang])}${items.length>1?`<small>${lbI+1} / ${items.length}</small>`:""}${it.video?"":`<div class="lb-hint">${lang==="zh"?(matchMedia("(hover:none)").matches?"兩指或點兩下可放大":"點兩下或滾輪可放大"):(matchMedia("(hover:none)").matches?"Pinch or double-tap to zoom":"Double-click or scroll to zoom")}</div>`}`;
+  zoomReset();
   ["lbPrev","lbPrevM"].forEach(id=>document.getElementById(id).disabled=lbI===0);
   ["lbNext","lbNextM"].forEach(id=>document.getElementById(id).disabled=lbI===items.length-1);
 }
@@ -752,11 +766,50 @@ lb.addEventListener("click",e=>{if(e.target===lb||e.target.classList.contains("l
 ["lbPrev","lbPrevM"].forEach(id=>document.getElementById(id).onclick=()=>step(-1));
 ["lbNext","lbNextM"].forEach(id=>document.getElementById(id).onclick=()=>step(1));
 lb.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")step(-1);if(e.key==="ArrowRight")step(1);});
-let tx=null;lb.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
-lb.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)step(dx<0?1:-1);tx=null;});
+/* zoom & pan inside the lightbox */
+let Z={s:1,x:0,y:0},pinch=null,pan=null,lastTap=0;
+function zImg(){return lbMedia.querySelector("img");}
+function zApply(){const im=zImg();if(!im)return;
+  const r=im.getBoundingClientRect(),w=r.width/Z.s,h=r.height/Z.s,mx=w*(Z.s-1)/2,my=h*(Z.s-1)/2;
+  Z.x=Math.max(-mx,Math.min(mx,Z.x));Z.y=Math.max(-my,Math.min(my,Z.y));
+  im.style.transform=`translate(${Z.x}px,${Z.y}px) scale(${Z.s})`;im.classList.toggle("zoomed",Z.s>1);}
+function zoomReset(){Z={s:1,x:0,y:0};const im=zImg();if(im){im.style.transform="";im.classList.remove("zoomed");}}
+function zoomAt(s,cx,cy){const im=zImg();if(!im)return;const r=im.getBoundingClientRect();
+  const ox=cx-(r.left+r.width/2),oy=cy-(r.top+r.height/2),k=s/Z.s;
+  Z.x=Z.x-ox*(k-1);Z.y=Z.y-oy*(k-1);Z.s=s;if(Z.s<=1.01)zoomReset();else zApply();}
+const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+let tx=null;
+lbMedia.addEventListener("touchstart",e=>{
+  if(!zImg())return;
+  if(e.touches.length===2){pinch={d:dist(e.touches),s:Z.s};zImg().classList.add("pinching");tx=null;}
+  else if(e.touches.length===1){
+    const now=Date.now(),t=e.touches[0];
+    if(now-lastTap<300){zoomAt(Z.s>1?1:2.5,t.clientX,t.clientY);lastTap=0;tx=null;e.preventDefault();return;}
+    lastTap=now;
+    if(Z.s>1){pan={x:t.clientX-Z.x,y:t.clientY-Z.y};zImg().classList.add("pinching");tx=null;}else tx=t.clientX;}
+},{passive:false});
+lbMedia.addEventListener("touchmove",e=>{
+  if(pinch&&e.touches.length===2){e.preventDefault();const t=e.touches,cx=(t[0].clientX+t[1].clientX)/2,cy=(t[0].clientY+t[1].clientY)/2;
+    zoomAt(Math.max(1,Math.min(4,pinch.s*dist(t)/pinch.d)),cx,cy);}
+  else if(pan&&e.touches.length===1){e.preventDefault();Z.x=e.touches[0].clientX-pan.x;Z.y=e.touches[0].clientY-pan.y;zApply();}
+},{passive:false});
+lbMedia.addEventListener("touchend",e=>{
+  const im=zImg();if(im)im.classList.remove("pinching");
+  if(pinch&&e.touches.length<2){pinch=null;return;}
+  if(pan){pan=null;return;}
+  if(tx==null||Z.s>1)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)step(dx<0?1:-1);tx=null;});
+lbMedia.addEventListener("dblclick",e=>{if(e.target.tagName==="IMG"&&!matchMedia("(hover:none)").matches)zoomAt(Z.s>1?1:2.5,e.clientX,e.clientY);});
+lbMedia.addEventListener("wheel",e=>{if(e.target.tagName!=="IMG")return;e.preventDefault();zoomAt(Math.max(1,Math.min(4,Z.s*(e.deltaY<0?1.15:1/1.15))),e.clientX,e.clientY);},{passive:false});
+let mdrag=null;lbMedia.addEventListener("mousedown",e=>{if(Z.s>1&&e.target.tagName==="IMG"){e.preventDefault();mdrag={x:e.clientX-Z.x,y:e.clientY-Z.y};e.target.classList.add("pinching");}});
+window.addEventListener("mousemove",e=>{if(mdrag){Z.x=e.clientX-mdrag.x;Z.y=e.clientY-mdrag.y;zApply();}});
+window.addEventListener("mouseup",()=>{if(mdrag){mdrag=null;const im=zImg();if(im)im.classList.remove("pinching");}});
 
 render();
 fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.episodes||[];EPS_LOADED=true;if(current==="podcast")render(true);}).catch(()=>{EPS_LOADED=true;if(current==="podcast")render(true);});
+</script>
+<script>
+/* 保護圖片：擋右鍵、拖曳、長按存圖 */
+["contextmenu","dragstart"].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest("img,video,.lb-media,.epd-art,.tile"))e.preventDefault();},{capture:true}));
 </script>
 </body>
 </html>
