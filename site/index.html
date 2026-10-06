@@ -121,7 +121,8 @@ button{font:inherit;color:inherit}
 /* ---------- about ---------- */
 .intro-m{display:none}
 .notice{position:relative;padding-bottom:clamp(30px,5vw,60px)}
-.scene{position:relative;max-width:900px;margin:0 auto;padding-bottom:4cqw;container-type:inline-size}
+.scene{position:relative;max-width:900px;margin:0 auto;container-type:inline-size}
+.scene > .board{margin-bottom:4cqw} /* cqw here = width of the scene, so the legs always end in the middle of the ground */
 .board{position:relative;width:88%;aspect-ratio:985/676;margin:0 auto;background:url(img/board.webp) center/100% 100% no-repeat;padding:7.5% 8% 0;container-type:inline-size;z-index:1}
 .board .stitle{margin-bottom:3cqi;padding-bottom:1.5cqi}
 .board .stitle .en{font-size:clamp(2.2rem,7.4cqi,3.7rem)}
@@ -297,7 +298,7 @@ dialog.lb::backdrop{background:rgba(26,34,40,.97)}
   .mapwrap{order:2;position:relative;z-index:1;right:auto;bottom:auto;width:calc(100% + var(--gutter));max-width:none;margin:-22% calc(-1 * var(--gutter)) 0 auto;justify-self:end;align-self:end}
   .gate .flight{justify-items:start}
   .chief,.cv{grid-template-columns:minmax(0,1fr)}
-  .chief .photo{max-width:45%}
+  .chief .photo{max-width:60%}
   .kappa-intro{grid-template-columns:minmax(0,1fr)}
   .kappa-intro img{max-width:60%}
   .epd-in{grid-template-columns:minmax(0,1fr)}
@@ -315,10 +316,14 @@ dialog.lb::backdrop{background:rgba(26,34,40,.97)}
   /* the notice board grows with its text: corners and legs keep their shape, the paper stretches */
   .board{aspect-ratio:auto;background:none;padding:0 2cqw 15cqw;
     border-style:solid;border-color:transparent;
-    border-width:calc(88cqw*62/985) calc(88cqw*58/985) calc(88cqw*140/985) calc(88cqw*58/985);
-    border-image:url(img/board.webp) 62 58 140 58 fill / calc(88cqw*62/985) calc(88cqw*58/985) calc(88cqw*140/985) calc(88cqw*58/985) stretch}
+    border-width:calc(96cqw*62/985) calc(96cqw*58/985) calc(96cqw*140/985) calc(96cqw*58/985);
+    border-image:url(img/board.webp) 62 58 140 58 fill / calc(96cqw*62/985) calc(96cqw*58/985) calc(96cqw*140/985) calc(96cqw*58/985) stretch}
   .board .stitle{margin-bottom:10px;padding-bottom:6px}
   .board p{font-size:.95rem;line-height:1.75}
+  .board{width:96%}
+  /* bigger map: the extra width is open sea on the left, so the island stays whole */
+  .mapwrap{width:140%;margin:-30% calc(-1 * var(--gutter)) 0 calc(var(--gutter) - 40%)}
+  .mapwrap .eboat{left:30%;top:82%;width:12%}
   /* language switch: small, in the top-right corner */
   .sky{padding-top:58px;padding-bottom:40px}
   .sky .langsw{position:absolute;top:12px;right:12px;bottom:auto;padding:3px}
