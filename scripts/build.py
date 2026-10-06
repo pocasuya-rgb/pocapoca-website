@@ -33,7 +33,8 @@ POD_SRC = os.path.join(ROOT, "podcast插畫")
 RSS_URL = "https://feed.firstory.me/rss/user/cklabznee4z8p08728tgfauzn"
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 IMG_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
-MAX_SIDE = 1500
+MAX_SIDE = 2400      # full-screen viewer
+MID_SIDE = 1400      # inside the episode window
 
 
 def load_json(path, default):
@@ -129,6 +130,9 @@ def copy_gallery(key):
             im = im.convert("RGB")
             im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
             im.save(os.path.join(dst, name), quality=84, optimize=True, progressive=True)
+            mid = im.copy()
+            mid.thumbnail((MID_SIDE, MID_SIDE), Image.LANCZOS)
+            mid.save(os.path.join(dst, f"{i:02d}-m.jpg"), quality=82, optimize=True, progressive=True)
             out.append(f"pod/{urllib.parse.quote(key)}/{name}")
         except Exception as exc:  # keep building even if one file is broken
             print(f"  ! skipped {key}/{f}: {exc}", file=sys.stderr)

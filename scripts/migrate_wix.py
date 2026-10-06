@@ -4,7 +4,7 @@
 For every episode whose Firstory description links to the old site, this opens
 that old page, finds the illustrations in it, downloads the original files
 from Wix and saves them as  podcast插畫/<EP folder>/01.jpg, 02.jpg, ...
-(resized so the longest side is at most 1500px, to keep the repository small).
+(resized so the longest side is at most 2400px, to keep the repository small).
 
 Usage:
   python3 scripts/migrate_wix.py --limit 3        # test with the 3 newest episodes
@@ -29,7 +29,7 @@ from build import fetch_rss, parse_rss, load_json, ROOT, POD_SRC  # noqa: E402
 OLD_SITE = "https://www.pocapocastoryvillage.com"
 MEDIA = re.compile(r"7c6412_[0-9a-f]{32}(?:~mv2)?\.(?:jpg|jpeg|png|gif)", re.I)
 UA = {"User-Agent": "Mozilla/5.0 (pocapoca-migration)"}
-MAX_SIDE = 1500
+MAX_SIDE = 2400
 
 
 def get(url, tries=3):
@@ -50,6 +50,19 @@ def media_ids(page_html):
         if m not in seen:
             seen.append(m)
     return seen
+
+
+def small_copy(folder):
+    """True when the folder only holds an earlier 1500px download from Wix,
+    so it can be replaced with the larger version."""
+    from PIL import Image
+    files = [f for f in os.listdir(folder) if not f.startswith(".")]
+    if not files or not all(re.fullmatch(r"\d\d\.jpg", f) for f in files):
+        return False
+    try:
+        return all(max(Image.open(os.path.join(folder, f)).size) == 1500 for f in files)
+    except Exception:
+        return False
 
 
 def main():
@@ -97,7 +110,7 @@ def main():
         # even though it also shows up in other posts' "recent posts" list
         if slug.startswith("/single-post/") and ids and ids[0] not in own:
             own.insert(0, ids[0])
-        if os.path.isdir(folder) and any(not f.startswith(".") for f in os.listdir(folder)):
+        if os.path.isdir(folder) and any(not f.startswith(".") for f in os.listdir(folder)) and not small_copy(folder):
             report.append(f"| {key} | {slug} | – | 已經有資料夾，略過 |")
             continue
         if not own:
