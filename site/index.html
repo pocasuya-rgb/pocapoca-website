@@ -65,6 +65,9 @@ button{font:inherit;color:inherit}
 
 /* ---------- landing ---------- */
 .gate{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;padding-inline:var(--gutter);overflow:hidden}
+/* home: a fixed layer of the sea texture that also reaches behind the browser's top and bottom bars;
+   it does not change the page height, so nothing moves and nothing needs scrolling */
+.gate::before{content:"";position:fixed;left:0;right:0;top:-200px;bottom:-200px;background:var(--sea) url(img/texture.jpg) center/1600px auto repeat;z-index:-1;pointer-events:none}
 .mapwrap{position:absolute;right:0;bottom:0;width:min(76vw,calc(100svh * 1.3373));aspect-ratio:3350/2505}
 .mapwrap .map{width:100%;height:100%;display:block}
 .mapwrap .eboat{position:absolute;width:13%;left:15%;top:77%;animation:bob 5s ease-in-out infinite}
