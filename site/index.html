@@ -419,14 +419,14 @@ const T = {
       intro:"村莊的名稱「Pocapoca」源自日文「ぽかぽか」，有溫暖人心的意思。住在故事村裡的村民每天都上演各式各樣溫暖的故事，村長 Poca 閒暇時，便將這些事情記錄下來，因此有了這裡……",
       worksIntro:"同一個故事或系列的作品會排在一起。點圖片可以放大，用左右鍵翻頁。",
       podIntro:"村長每兩週說一個 Pocapoca 村的溫暖故事，每一集都配上一張新畫的插畫。點插畫可以看大圖。",
-      listen:"收聽這一集 →",listenAll:"在 Firstory 收聽",ytChannel:"YouTube 頻道",ytVersion:"YouTube 影片版",share:"分享這集",audioNote:"這一集暫時無法在這裡播放，請改用下面的 Firstory 連結收聽。",all:"全部",kappa:"小河童日記",geoffrey:"喬弗瑞先生的冒險筆記",mail:"村長信箱",other:"其他故事",search:"搜尋集數或故事名稱",showMore:"顯示更多",eps:"集",min:"分鐘",
+      listen:"收聽這一集 →",listenAll:"在 Firstory 收聽",ytChannel:"YouTube 頻道",ytVersion:"YouTube 影片版",share:"分享這集",audioNote:"這一集暫時無法在這裡播放，請按下面的「其他平台收聽」。",platforms:"其他平台收聽",all:"全部",kappa:"小河童日記",geoffrey:"喬弗瑞先生的冒險筆記",mail:"村長信箱",other:"其他故事",search:"搜尋集數或故事名稱",showMore:"顯示更多",eps:"集",min:"分鐘",
       ytTitle:"YouTube「Pocapoca故事村」",ytBody:"村長說故事、畫畫過程和動畫短片，都在 YouTube 頻道。",ytGo:"前往頻道 →",
       copy:"複製",copied:"已複製",cIllus:"插畫、繪本聯繫",cBiz:"授權／商業合作請洽：毛毛蟲文創（凱特）"},
   en:{lang:"中文",
       intro:"Pocapoca comes from the Japanese “ぽかぽか”, meaning warmth that comforts the heart. All sorts of warm stories happen every day in Pocapoca Story Village, and whenever she has a moment, Chief Poca writes them down. That's how this place began…",
       worksIntro:"Pieces from the same story or series sit together. Click an image to enlarge it, and use the arrow keys to turn the page.",
       podIntro:"Every other week, Chief Poca tells a warm story from Pocapoca Village, and each episode comes with a new illustration. The stories are in Mandarin. Click an illustration to enlarge it.",
-      listen:"Listen →",listenAll:"Listen on Firstory",ytChannel:"YouTube channel",ytVersion:"Watch on YouTube",share:"Share",audioNote:"This episode can’t play here right now. Please use the Firstory link below.",all:"All",kappa:"Kappa's Diary",geoffrey:"Mr. Geoffrey's Adventures",mail:"Mailbox",other:"Other stories",search:"Search episodes",showMore:"Show more",eps:"episodes",min:"min",
+      listen:"Listen →",listenAll:"Listen on Firstory",ytChannel:"YouTube channel",ytVersion:"Watch on YouTube",share:"Share",audioNote:"This episode can’t play here right now. Please use “Listen on other apps” below.",platforms:"Listen on other apps",all:"All",kappa:"Kappa's Diary",geoffrey:"Mr. Geoffrey's Adventures",mail:"Mailbox",other:"Other stories",search:"Search episodes",showMore:"Show more",eps:"episodes",min:"min",
       ytTitle:"YouTube: Pocapoca Story Village",ytBody:"Storytelling by Chief Poca, drawing process videos and short animations.",ytGo:"Visit the channel →",
       copy:"Copy",copied:"Copied",cIllus:"Illustration & picture books",cBiz:"Licensing & business: Caterpillar Creative (Kate)"}
 };
@@ -769,7 +769,7 @@ function openEp(i){
     <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
     <audio controls preload="none" src="${audio}"></audio>
     <p class="epd-note" hidden>${esc(t("audioNote"))}</p>
-    <div class="btns"><a class="btn" href="https://open.firstory.fm/story/${story}/platforms" target="_blank" rel="noopener">${ICONS.pod} Firstory</a>
+    <div class="btns"><a class="btn" href="https://open.firstory.fm/story/${story}/platforms" target="_blank" rel="noopener">${ICONS.pod} ${esc(t("platforms"))}</a>
     ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}
     <button class="btn btn-share" type="button" data-share="${i}">${ICONS.share} ${esc(t("share"))}</button></div>
     <p class="share-toast" role="status" aria-live="polite" hidden></p>`;
