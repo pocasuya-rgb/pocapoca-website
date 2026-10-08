@@ -25,11 +25,28 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build import fetch_rss, parse_rss, load_json, ROOT, POD_SRC  # noqa: E402
+from colors import to_srgb  # noqa: E402
 
 OLD_SITE = "https://www.pocapocastoryvillage.com"
+# The domain now points to the new site, so the old pages are read straight
+# from Wix's servers (the Wix site stays online until the plan is cancelled).
+WIX_IPS = ["185.230.63.171", "185.230.63.186", "185.230.63.107"]
 MEDIA = re.compile(r"7c6412_[0-9a-f]{32}(?:~mv2)?\.(?:jpg|jpeg|png|gif)", re.I)
 UA = {"User-Agent": "Mozilla/5.0 (pocapoca-migration)"}
 MAX_SIDE = 2400
+
+
+import socket
+_real_getaddrinfo = socket.getaddrinfo
+
+
+def _wix_getaddrinfo(host, *a, **kw):
+    if host in ("www.pocapocastoryvillage.com", "pocapocastoryvillage.com"):
+        host = WIX_IPS[0]
+    return _real_getaddrinfo(host, *a, **kw)
+
+
+socket.getaddrinfo = _wix_getaddrinfo
 
 
 def get(url, tries=3):
@@ -65,11 +82,38 @@ def small_copy(folder):
         return False
 
 
+def fix_colors(key, folder, own):
+    """Re-download the pictures of one episode and re-save the ones that were
+    CMYK (or had a colour profile), so they no longer look neon. Returns how many."""
+    from PIL import Image, ImageOps
+    fixed = 0
+    for n, mid in enumerate(own, 1):
+        path = os.path.join(folder, f"{n:02d}.jpg")
+        if not os.path.exists(path):
+            continue
+        try:
+            src = Image.open(io.BytesIO(get(f"https://static.wixstatic.com/media/{mid}")))
+            if src.mode != "CMYK" and not src.info.get("icc_profile"):
+                continue
+            was_cmyk = src.mode == "CMYK"
+            im = to_srgb(ImageOps.exif_transpose(src))
+            im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
+            im.save(path, quality=88, optimize=True, progressive=True)
+            fixed += 1
+            print(f"{key}/{n:02d}.jpg re-saved ({'CMYK' if was_cmyk else 'colour profile'})")
+        except Exception as exc:
+            print(f"! {key} image {mid}: {exc}")
+        time.sleep(0.3)
+    return fixed
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--only", default="")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--fix-colors", action="store_true",
+                    help="download again and re-save only the CMYK / colour-profile pictures")
     args = ap.parse_args()
 
     overrides = load_json(os.path.join(ROOT, "data", "overrides.json"), {})
@@ -110,6 +154,13 @@ def main():
         # even though it also shows up in other posts' "recent posts" list
         if slug.startswith("/single-post/") and ids and ids[0] not in own:
             own.insert(0, ids[0])
+        if args.fix_colors:
+            if not own or not os.path.isdir(folder):
+                continue
+            fixed = fix_colors(key, folder, own)
+            report.append(f"| {key} | {slug} | {fixed} | 修正顏色 {fixed} 張 |" if fixed else f"| {key} | {slug} | 0 | 顏色正常 |")
+            done += 1 if fixed else 0
+            continue
         if os.path.isdir(folder) and any(not f.startswith(".") for f in os.listdir(folder)) and not small_copy(folder):
             report.append(f"| {key} | {slug} | – | 已經有資料夾，略過 |")
             continue
@@ -125,8 +176,7 @@ def main():
         for n, mid in enumerate(own, 1):
             try:
                 data = get(f"https://static.wixstatic.com/media/{mid}")
-                im = ImageOps.exif_transpose(Image.open(io.BytesIO(data)))
-                im = im.convert("RGB")
+                im = to_srgb(ImageOps.exif_transpose(Image.open(io.BytesIO(data))))
                 im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
                 im.save(os.path.join(folder, f"{n:02d}.jpg"), quality=88, optimize=True, progressive=True)
                 saved += 1

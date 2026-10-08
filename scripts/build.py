@@ -25,6 +25,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 from episode_keys import episode_keys
+from colors import to_srgb
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE_SRC = os.path.join(ROOT, "site")
@@ -137,10 +138,7 @@ def copy_gallery(key):
                 continue
             i += 1
             name = f"{i:02d}.jpg"
-            im = ImageOps.exif_transpose(im)
-            if im.mode == "CMYK" or im.mode in ("RGBA", "LA", "P"):
-                im = im.convert("RGB")
-            im = im.convert("RGB")
+            im = to_srgb(ImageOps.exif_transpose(im))   # CMYK etc. -> correct sRGB colours
             im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
             im.save(os.path.join(dst, name), quality=84, optimize=True, progressive=True)
             mid = im.copy()
