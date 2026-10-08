@@ -238,6 +238,9 @@ button{font:inherit;color:inherit}
 .small{color:var(--ink-soft);font-size:.82rem;text-align:center;margin:20px 0 0}
 
 .pod-hero .btns,.epd-info .btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn-share{background:var(--teal,#3d7f84)}
+.share-toast{font-size:.85rem;color:var(--ink-soft);margin:0;word-break:break-all}
+.share-toast span{user-select:all;-webkit-user-select:all;color:var(--ink)}
 .kappa-intro{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,5fr);gap:clamp(16px,3vw,36px);align-items:center;margin:clamp(24px,4vw,44px) 0}
 .kappa-intro img{border-radius:3px}
 .kappa-intro p{margin:0 0 .8em;max-width:36em}
@@ -416,14 +419,14 @@ const T = {
       intro:"村莊的名稱「Pocapoca」源自日文「ぽかぽか」，有溫暖人心的意思。住在故事村裡的村民每天都上演各式各樣溫暖的故事，村長 Poca 閒暇時，便將這些事情記錄下來，因此有了這裡……",
       worksIntro:"同一個故事或系列的作品會排在一起。點圖片可以放大，用左右鍵翻頁。",
       podIntro:"村長每兩週說一個 Pocapoca 村的溫暖故事，每一集都配上一張新畫的插畫。點插畫可以看大圖。",
-      listen:"收聽這一集 →",listenAll:"在 Firstory 收聽",ytChannel:"YouTube 頻道",ytVersion:"YouTube 影片版",audioNote:"這一集暫時無法在這裡播放，請改用下面的 Firstory 連結收聽。",all:"全部",kappa:"小河童日記",geoffrey:"喬弗瑞先生的冒險筆記",mail:"村長信箱",other:"其他故事",search:"搜尋集數或故事名稱",showMore:"顯示更多",eps:"集",min:"分鐘",
+      listen:"收聽這一集 →",listenAll:"在 Firstory 收聽",ytChannel:"YouTube 頻道",ytVersion:"YouTube 影片版",share:"分享這集",audioNote:"這一集暫時無法在這裡播放，請改用下面的 Firstory 連結收聽。",all:"全部",kappa:"小河童日記",geoffrey:"喬弗瑞先生的冒險筆記",mail:"村長信箱",other:"其他故事",search:"搜尋集數或故事名稱",showMore:"顯示更多",eps:"集",min:"分鐘",
       ytTitle:"YouTube「Pocapoca故事村」",ytBody:"村長說故事、畫畫過程和動畫短片，都在 YouTube 頻道。",ytGo:"前往頻道 →",
       copy:"複製",copied:"已複製",cIllus:"插畫、繪本聯繫",cBiz:"授權／商業合作請洽：毛毛蟲文創（凱特）"},
   en:{lang:"中文",
       intro:"Pocapoca comes from the Japanese “ぽかぽか”, meaning warmth that comforts the heart. All sorts of warm stories happen every day in Pocapoca Story Village, and whenever she has a moment, Chief Poca writes them down. That's how this place began…",
       worksIntro:"Pieces from the same story or series sit together. Click an image to enlarge it, and use the arrow keys to turn the page.",
       podIntro:"Every other week, Chief Poca tells a warm story from Pocapoca Village, and each episode comes with a new illustration. The stories are in Mandarin. Click an illustration to enlarge it.",
-      listen:"Listen →",listenAll:"Listen on Firstory",ytChannel:"YouTube channel",ytVersion:"Watch on YouTube",audioNote:"This episode can’t play here right now. Please use the Firstory link below.",all:"All",kappa:"Kappa's Diary",geoffrey:"Mr. Geoffrey's Adventures",mail:"Mailbox",other:"Other stories",search:"Search episodes",showMore:"Show more",eps:"episodes",min:"min",
+      listen:"Listen →",listenAll:"Listen on Firstory",ytChannel:"YouTube channel",ytVersion:"Watch on YouTube",share:"Share",audioNote:"This episode can’t play here right now. Please use the Firstory link below.",all:"All",kappa:"Kappa's Diary",geoffrey:"Mr. Geoffrey's Adventures",mail:"Mailbox",other:"Other stories",search:"Search episodes",showMore:"Show more",eps:"episodes",min:"min",
       ytTitle:"YouTube: Pocapoca Story Village",ytBody:"Storytelling by Chief Poca, drawing process videos and short animations.",ytGo:"Visit the channel →",
       copy:"Copy",copied:"Copied",cIllus:"Illustration & picture books",cBiz:"Licensing & business: Caterpillar Creative (Kate)"}
 };
@@ -587,6 +590,7 @@ const ICONS={
  yt:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15V9l5.8 3-5.8 3z"/></svg>',
  ig:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>',
  fb:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>',
+ share:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>',
  pod:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1a7 7 0 0 0-7 7v4a7 7 0 0 0 6 6.9V22H8v2h8v-2h-3v-3.1a7 7 0 0 0 6-6.9V8a7 7 0 0 0-7-7zm-3 7a3 3 0 0 1 6 0v4a3 3 0 0 1-6 0V8z"/></svg>'
 };
 const CONTACT={illus:"pocasuya@gmail.com",biz:"Kate@indot.com.tw"};
@@ -724,6 +728,18 @@ function refreshPod(){const g=document.getElementById("podGrid"); if(g) g.innerH
 document.addEventListener("input",e=>{if(e.target.id==="podSearch"){podQuery=e.target.value;podShown=24;refreshPod();}});
 
 /* episode player */
+/* share one episode: the link opens a small page with this episode's picture, then jumps here */
+function epSlug(e){const m=e[0].match(/^EP\s*0*(\d+)/i);return "ep"+(m?m[1]:e[1].replace(/-/g,""));}
+async function shareEp(i,btn){
+  const e=EPS[i]; if(!e) return;
+  const url="https://www.pocapocastoryvillage.com/"+epSlug(e)+"/";
+  const title=e[0]+"｜Poca村長的故事時間";
+  if(navigator.share){try{await navigator.share({title,text:title,url});return;}catch(err){if(err&&err.name==="AbortError")return;}}
+  let ok=false; try{await navigator.clipboard.writeText(url);ok=true;}catch(err){}
+  const toast=btn.closest(".epd-info").querySelector(".share-toast");
+  toast.innerHTML=ok?esc(t("copied"))+` <span>${esc(url)}</span>`:`<span>${esc(url)}</span>`;
+  toast.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>{toast.hidden=true;},4000);
+}
 function openEp(i){
   const e=EPS[i]; if(!e) return;
   const [title,date,dur,slug,story,desc,img,audio,yt,gal]=e;
@@ -754,7 +770,9 @@ function openEp(i){
     <audio controls preload="none" src="${audio}"></audio>
     <p class="epd-note" hidden>${esc(t("audioNote"))}</p>
     <div class="btns"><a class="btn" href="https://open.firstory.me/story/${story}" target="_blank" rel="noopener">${ICONS.pod} Firstory</a>
-    ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}</div>`;
+    ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}
+    <button class="btn btn-share" type="button" data-share="${i}">${ICONS.share} ${esc(t("share"))}</button></div>
+    <p class="share-toast" role="status" aria-live="polite" hidden></p>`;
   const au=d.querySelector("audio"); au.addEventListener("error",()=>{d.querySelector(".epd-note").hidden=false;},{once:true});
   if(!d.open) d.showModal();
 }
@@ -794,6 +812,7 @@ document.addEventListener("click",e=>{
   const b=e.target.closest("[data-lang]"); if(b){lang=b.dataset.lang;try{localStorage.setItem("poca-lang",lang);}catch(err){} if(location.hash==="#about")render(true); else location.hash="#about"; return;}
   const pf=e.target.closest("[data-pf]"); if(pf){podFilter=pf.dataset.pf;podShown=24;document.querySelectorAll("[data-pf]").forEach(x=>x.setAttribute("aria-pressed",x===pf));refreshPod();return;}
   if(e.target.id==="podMore"){podShown+=24;refreshPod();return;}
+  const sh=e.target.closest("[data-share]"); if(sh){shareEp(+sh.dataset.share,sh);return;}
   const ep=e.target.closest("[data-ep]"); if(ep){openEp(+ep.dataset.ep);return;}
   const ch=e.target.closest("[data-chars]"); if(ch){LB_SETS.chars=[{src:ch.dataset.chars,zh:"小河童日記人物關係圖",en:"Kappa's Diary character map"}];lbSet="chars";lbI=0;showLB();lb.showModal();return;}
   if(e.target.closest(".epd-close")||e.target.id==="epdlg"){document.getElementById("epdlg").close();return;}

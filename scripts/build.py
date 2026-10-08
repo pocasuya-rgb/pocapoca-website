@@ -172,6 +172,44 @@ REDIRECT_PAGE = """<!doctype html>
 """
 
 
+SITE_URL = "https://www.pocapocastoryvillage.com"
+SHARE_PAGE = """<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<title>__TITLE__</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="__DESC__">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Pocapoca 故事村">
+<meta property="og:title" content="__TITLE__">
+<meta property="og:description" content="__DESC__">
+<meta property="og:image" content="__IMG__">
+<meta property="og:url" content="__URL__">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="__URL__">
+<meta http-equiv="refresh" content="0;url=../#__HASH__">
+<script>location.replace("../#__HASH__");</script>
+</head><body style="font-family:sans-serif;padding:40px;text-align:center">
+<p><a href="../#__HASH__">__TITLE__</a></p></body></html>
+"""
+
+
+def write_share_page(e, gal):
+    """A tiny page per episode (e.g. /ep185/) so a shared link shows that episode's
+    title and picture in LINE / Facebook, then opens the episode on the site."""
+    h = episode_hash(e)[1:]
+    if gal:
+        img = SITE_URL + "/" + gal[0].replace(".jpg", "-m.jpg")
+    else:
+        img = e["cover"] or SITE_URL + "/img/og.jpg"
+    page = (SHARE_PAGE.replace("__TITLE__", html.escape(e["title"] + "｜Poca村長的故事時間"))
+            .replace("__DESC__", html.escape(e["desc"] or "Pocapoca 故事村的 Podcast"))
+            .replace("__IMG__", html.escape(img)).replace("__URL__", f"{SITE_URL}/{h}/")
+            .replace("__HASH__", h))
+    os.makedirs(os.path.join(OUT, h), exist_ok=True)
+    with open(os.path.join(OUT, h, "index.html"), "w", encoding="utf-8") as f:
+        f.write(page)
+
+
 def episode_hash(e):
     m = re.match(r"^EP\s*0*(\d+)", e["title"], re.I)
     return "#ep" + m.group(1) if m else "#ep" + e["date"].replace("-", "")
@@ -190,6 +228,7 @@ def main():
         gal = copy_gallery(e["key"])
         rows.append([e["title"], e["date"], e["dur"], e["slug"], e["story"], e["desc"],
                      e["cover"], e["audio"], e["yt"], gal])
+        write_share_page(e, gal)
         if e["slug"] and e["slug"] not in redirects:   # newest episode wins for shared links
             redirects[e["slug"]] = episode_hash(e)
             redirects[e["slug"].lower()] = episode_hash(e)
