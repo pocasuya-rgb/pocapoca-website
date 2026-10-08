@@ -63,6 +63,50 @@ def clean_desc(raw):
     return text[:160]
 
 
+YT_FEED = "https://www.youtube.com/feeds/videos.xml?channel_id=UC4ErmW38TjVICSTMydcmmJw"
+_YT_TAGS = re.compile(r"Poca村長的故事時間|兒童睡前故事|兒童故事|睡前故事|小河童日記|喬弗瑞先生的冒險筆記|"
+                      r"Chinese stories|新年故事|節慶故事|聖誕故事|萬聖節故事|端午節故事|^繪本$|^20\d\d$|"
+                      r"^中秋節$|^端午節$|^清明節$|^中元節$|念信單元|聽眾來信|故事回顧|藍色的旅程")
+
+
+def _core(text):
+    text = re.sub(r"[\s　！!？?。．・·、，,：:（）()「」『』~～\-—–]", "", text)
+    return text.lower()
+
+
+def fill_youtube_from_channel(eps):
+    """New episodes often have no YouTube link in the Firstory text. Look at the
+    newest videos on the YouTube channel and link the one with the same story title."""
+    try:
+        req = urllib.request.Request(YT_FEED, headers={"User-Agent": "pocapoca-site-builder"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            root = ET.fromstring(r.read())
+    except Exception as exc:
+        print(f"  ! YouTube channel not read: {exc}")
+        return
+    ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
+    videos = []
+    for en in root.findall("a:entry", ns):
+        title = en.findtext("a:title", "", ns)
+        vid = en.findtext("yt:videoId", "", ns)
+        if re.search(r"連續聽|BGM|音樂", title):
+            continue
+        parts = [p.strip() for p in re.split(r"[｜|]", title) if p.strip() and not _YT_TAGS.search(p.strip())]
+        if parts and vid:
+            videos.append((_core(parts[0]), vid))
+    for e in eps:
+        if e["yt"]:
+            continue
+        t = re.sub(r"^EP\s*\d+\s*", "", e["title"], flags=re.I)
+        t = re.sub(r"^(小河童日記|小河童|喬弗瑞先生的冒險筆記)\s*[：:]\s*", "", t)
+        t = re.sub(r"[（(][^）)]*(繪本|節慶派對|系列)[^）)]*[）)]\s*$", "", t)
+        c = _core(t)
+        for vc, vid in videos:
+            if vc and (vc == c or (len(vc) >= 3 and (vc in c or c in vc))):
+                e["yt"] = vid
+                break
+
+
 def parse_rss(xml_bytes, overrides):
     root = ET.fromstring(xml_bytes)
     items = root.find("channel").findall("item")
@@ -102,6 +146,7 @@ def parse_rss(xml_bytes, overrides):
     for e in eps:
         if e["yt"] and counts[e["yt"]] > 1:
             e["yt"] = ""
+    fill_youtube_from_channel(eps)
     keys = episode_keys([(e["title"], e["date"]) for e in eps])
     for e, k in zip(eps, keys):
         e["key"] = k
