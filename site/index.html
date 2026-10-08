@@ -769,7 +769,7 @@ function openEp(i){
     <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
     <audio controls preload="none" src="${audio}"></audio>
     <p class="epd-note" hidden>${esc(t("audioNote"))}</p>
-    <div class="btns"><a class="btn" href="https://open.firstory.me/story/${story}" target="_blank" rel="noopener">${ICONS.pod} Firstory</a>
+    <div class="btns"><a class="btn" href="https://open.firstory.fm/story/${story}/platforms" target="_blank" rel="noopener">${ICONS.pod} Firstory</a>
     ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}
     <button class="btn btn-share" type="button" data-share="${i}">${ICONS.share} ${esc(t("share"))}</button></div>
     <p class="share-toast" role="status" aria-live="polite" hidden></p>`;
