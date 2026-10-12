@@ -514,7 +514,8 @@ const CV={
       ["2017.03",{zh:"《看見生命的故事》國語日報 2016 華夏徵文中小學生作品集 插畫設計",en:"Seeing Life's Stories, Mandarin Daily News student anthology illustrations"}],
       ["2016.10",{zh:"關渡四季系列明信片 插畫設計",en:"Guandu Four Seasons postcard series"}],
       ["2015.04",{zh:"私立聖心小學 繪本壁畫",en:"Sacred Heart Primary School, picture-book mural"}]],
- cross:[["2022.05",{zh:"南熠樂集 x 正修科技大學《尋找，幸福的聲色》",en:"Nan Yi Ensemble × Cheng Shiu University, In Search of the Sounds and Colors of Happiness"}],
+ cross:[["2024.04",{zh:"台中琵琶樂團《POCAPOCA故事村繪本音樂會》台中兒藝節",en:"Taichung Pipa Orchestra, Pocapoca Story Village Picture Book Concert, Taichung Children's Arts Festival"}],
+  ["2022.05",{zh:"南熠樂集 x 正修科技大學《尋找，幸福的聲色》",en:"Nan Yi Ensemble × Cheng Shiu University, In Search of the Sounds and Colors of Happiness"}],
       ["2018.05",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《和媽媽一起去上班》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: Going to Work with Mom"}],
       ["2017.06",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《北方船隻圖鑑》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: A Field Guide to Northern Boats"}],
       ["2017.05",{zh:"台北愛樂室內樂坊 x 音樂閱讀劇場《轉學生日記：藍色的旅程》",en:"Taipei Philharmonic Chamber Ensemble, music-reading theatre: Diary of a New Student — The Blue Journey"}]]
@@ -896,6 +897,22 @@ window.addEventListener("mousemove",e=>{if(mdrag){Z.x=e.clientX-mdrag.x;Z.y=e.cl
 window.addEventListener("mouseup",()=>{if(mdrag){mdrag=null;const im=zImg();if(im)im.classList.remove("pinching");}});
 
 render();
+/* About texts come from the files in 關於我/ (about-中文.txt, about-English.txt) */
+fetch("data/about.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d) return;
+  for(const lang of ["zh","en"]){const a=d[lang]; if(!a) continue;
+    if(a.village){T[lang].intro=a.village; BIO.village[lang]=a.village;}
+    if(a.poca) BIO.poca[lang]=a.poca;
+  }
+  for(const k of Object.keys(CV)){
+    const zh=(d.zh&&d.zh[k])||null, en=(d.en&&d.en[k])||null; if(!zh&&!en) continue;
+    /* the Chinese file decides the list; each line finds its English line by the same date
+       (if there is no English line yet, the Chinese text is shown in English too) */
+    const base=zh||en, pool=(en||[]).slice();
+    CV[k]=base.map(([dt,txt])=>{const j=pool.findIndex(x=>x[0]===dt); const e=j>=0?pool.splice(j,1)[0][1]:txt; return [dt,{zh:txt,en:zh?e:txt}];});
+  }
+  if(current==="about") render(true);
+}).catch(()=>{});
 fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.episodes||[];EPS_LOADED=true;if(current==="podcast")render(true);}).catch(()=>{EPS_LOADED=true;if(current==="podcast")render(true);});
 </script>
 <script>

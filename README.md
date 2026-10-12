@@ -19,3 +19,10 @@
 | `data/overrides.json` | 手動修正某一集的資料（例如插畫舊網址貼錯） |
 | `scripts/` | 自動產生網站的小程式 |
 | `.github/workflows/` | GitHub 自動執行的設定（每天更新網站、搬移 Wix 插畫） |
+
+## 更新 About（關於我）
+
+1. 打開「關於我」資料夾，修改 `about-中文.txt`（英文版是 `about-English.txt`）。
+2. 每一筆一行：日期 + 空格 + 內容，新的寫在最上面；【 】裡的標題不要改。
+3. 存檔後用 GitHub Desktop 上傳（Commit to main → Push origin），約 2 分鐘網站就更新。
+4. 英文檔沒寫到的新項目，英文版會先顯示中文。之後在英文檔加一行同樣日期的英文就好。

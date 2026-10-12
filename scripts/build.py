@@ -255,6 +255,51 @@ def write_share_page(e, gal):
         f.write(page)
 
 
+ABOUT_DIR = os.path.join(ROOT, "關於我")
+ABOUT_KEYS = {
+    "關於故事村": "village", "關於村長": "poca", "出版": "pub", "得獎": "awards", "展覽": "expo",
+    "插畫合作": "collab", "跨界合作": "cross", "學歷": "edu", "駐村": "res",
+    "About the Village": "village", "About Poca": "poca", "Books": "pub", "Awards": "awards",
+    "Exhibitions": "expo", "Illustration": "collab", "Performance": "cross", "Education": "edu", "Residency": "res",
+}
+
+
+def parse_about(path):
+    """Read one About text file (see 關於我/about-中文.txt) into a dict."""
+    out, key = {}, None
+    with open(path, encoding="utf-8-sig") as f:
+        for raw in f:
+            line = raw.strip()
+            if not line or line.startswith("//"):
+                continue
+            m = re.fullmatch(r"[【\[]\s*(.+?)\s*[】\]]", line)
+            if m:
+                key = ABOUT_KEYS.get(m.group(1))
+                if key is None:
+                    print(f"  ! unknown title in {os.path.basename(path)}: {line}")
+                continue
+            if key in ("village", "poca"):
+                out[key] = (out.get(key, "") + line).strip()
+            elif key:
+                m = re.match(r"^(\d[\d.\-–~／/ ]*?)\s{1,}(\S.*)$", line)
+                date, text = (m.group(1).strip(), m.group(2).strip()) if m else ("", line)
+                out.setdefault(key, []).append([date.replace("~", "–"), text])
+    return out
+
+
+def write_about():
+    files = {"zh": "about-中文.txt", "en": "about-English.txt"}
+    data = {}
+    for lang, fn in files.items():
+        path = os.path.join(ABOUT_DIR, fn)
+        if os.path.exists(path):
+            data[lang] = parse_about(path)
+    if data:
+        with open(os.path.join(OUT, "data", "about.json"), "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+        print(f"About: {', '.join(data)}")
+
+
 def episode_hash(e):
     m = re.match(r"^EP\s*0*(\d+)", e["title"], re.I)
     return "#ep" + m.group(1) if m else "#ep" + e["date"].replace("-", "")
@@ -267,6 +312,7 @@ def main():
     shutil.copytree(SITE_SRC, OUT)
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
 
+    write_about()
     eps = parse_rss(fetch_rss(), overrides)
     rows, redirects = [], {}
     for e in eps:
