@@ -374,6 +374,13 @@ img,video{-webkit-user-drag:none;-webkit-user-select:none;user-select:none;-webk
   .lb-bar .lb-btn{background:rgba(26,34,40,.45)}
 }
 </style>
+<!-- Google Analytics (visitor statistics) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D48SYXTD65"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag("js",new Date());
+gtag("config","G-D48SYXTD65",{send_page_view:false}); /* pages are counted in render() */
+</script>
 </head>
 <body>
 
@@ -790,6 +797,7 @@ function openEp(i){
 const VIEWS={about:viewAbout,works:viewWorks,podcast:viewPodcast};
 const SUB=new Set(["cat-books","cat-series","cat-singles","cat-anim",...BOOKS.map(b=>b.id),...SERIES.map(s=>s.id),...ANIM_GROUPS.map(s=>s.id)]);
 let current=null;
+let trackedHash=null;
 function render(force){
   const h=(location.hash||"#home").slice(1);
   const epm=h.match(/^ep(\d+)$/); let epIdx=-1;
@@ -802,6 +810,9 @@ function render(force){
     current=route;
   }
   if(route==="home") fitMap();
+  /* count this view in Google Analytics: /about, /works, /podcast, /ep184 ... */
+  try{ if(window.gtag && trackedHash!==h){ trackedHash=h;
+    gtag("event","page_view",{page_location:location.origin+"/"+(h==="home"?"":h),page_path:"/"+(h==="home"?"":h),page_title:document.title+(h==="home"?"":" | "+h)}); } }catch(e){}
   if(SUB.has(h)){const el=document.getElementById(h); if(el) el.scrollIntoView();}
   const dlg=document.getElementById("epdlg"); if(epIdx>=0) openEp(epIdx); else if(dlg&&dlg.open) dlg.close();
   document.documentElement.lang=lang==="zh"?"zh-Hant":"en";

@@ -231,28 +231,62 @@ SHARE_PAGE = """<!doctype html>
 <meta property="og:url" content="__URL__">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="__URL__">
-<meta http-equiv="refresh" content="0;url=../#__HASH__">
-<script>location.replace("../#__HASH__");</script>
+<meta http-equiv="refresh" content="0;url=__HASH__">
+<script>location.replace("__HASH__");</script>
 </head><body style="font-family:sans-serif;padding:40px;text-align:center">
-<p><a href="../#__HASH__">__TITLE__</a></p></body></html>
+<p><a href="__HASH__">__TITLE__</a></p></body></html>
 """
 
 
-def write_share_page(e, gal):
-    """A tiny page per episode (e.g. /ep185/) so a shared link shows that episode's
-    title and picture in LINE / Facebook, then opens the episode on the site."""
+def share_page_html(e, gal):
     h = episode_hash(e)[1:]
     if gal:
         img = SITE_URL + "/" + gal[0].replace(".jpg", "-m.jpg")
     else:
         img = e["cover"] or SITE_URL + "/img/og.jpg"
-    page = (SHARE_PAGE.replace("__TITLE__", html.escape(e["title"] + "｜Poca村長的故事時間"))
-            .replace("__DESC__", html.escape(e["desc"] or "Pocapoca 故事村的 Podcast"))
+    desc = re.sub(r"\s+", " ", e["desc"] or "").strip() or "Pocapoca 故事村的 Podcast"
+    if len(desc) > 150:
+        desc = desc[:150].rstrip() + "…"
+    return (SHARE_PAGE.replace("__TITLE__", html.escape(e["title"] + "｜Poca村長的故事時間"))
+            .replace("__DESC__", html.escape(desc))
             .replace("__IMG__", html.escape(img)).replace("__URL__", f"{SITE_URL}/{h}/")
-            .replace("__HASH__", h))
-    os.makedirs(os.path.join(OUT, h), exist_ok=True)
-    with open(os.path.join(OUT, h, "index.html"), "w", encoding="utf-8") as f:
+            .replace("__HASH__", f"{SITE_URL}/#{h}"))
+
+
+def write_page(rel_dir, page):
+    os.makedirs(os.path.join(OUT, rel_dir), exist_ok=True)
+    with open(os.path.join(OUT, rel_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
+
+
+def write_share_page(e, gal):
+    """A tiny page per episode (e.g. /ep185/) so a shared link shows that episode's
+    title and picture in LINE / Facebook, then opens the episode on the site."""
+    write_page(episode_hash(e)[1:], share_page_html(e, gal))
+
+
+RESERVED = {"img", "data", "fonts", "vid", "podcast插畫"}
+
+
+def write_old_link_page(slug, e, gal):
+    """Old Wix address (e.g. /j-christmas): a real page with the episode's title and
+    description (instead of a 404), pointing search engines to the new /epN/ page."""
+    parts = [x for x in slug.strip().strip("/").split("/")]
+    if not parts or any(x in ("", ".", "..") or "\\" in x for x in parts):
+        return
+    if parts[0].lower() in RESERVED or re.fullmatch(r"ep\d+", parts[0], re.I):
+        return
+    write_page(os.path.join(*parts), share_page_html(e, gal))
+
+
+def write_sitemap(eps):
+    urls = [SITE_URL + "/"] + [f"{SITE_URL}/{episode_hash(e)[1:]}/" for e in eps]
+    body = "".join(f"<url><loc>{html.escape(u)}</loc></url>\n" for u in dict.fromkeys(urls))
+    with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + body + "</urlset>\n")
+    with open(os.path.join(OUT, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
 
 
 ABOUT_DIR = os.path.join(ROOT, "關於我")
@@ -321,6 +355,7 @@ def main():
                      e["cover"], e["audio"], e["yt"], gal])
         write_share_page(e, gal)
         if e["slug"] and e["slug"] not in redirects:   # newest episode wins for shared links
+            write_old_link_page(e["slug"], e, gal)
             redirects[e["slug"]] = episode_hash(e)
             redirects[e["slug"].lower()] = episode_hash(e)
     extra = load_json(os.path.join(ROOT, "data", "old-links.json"), {})
@@ -329,6 +364,7 @@ def main():
 
     with open(os.path.join(OUT, "data", "podcast.json"), "w", encoding="utf-8") as f:
         json.dump({"episodes": rows}, f, ensure_ascii=False, separators=(",", ":"))
+    write_sitemap(eps)
     with open(os.path.join(OUT, "404.html"), "w", encoding="utf-8") as f:
         f.write(REDIRECT_PAGE.replace("__MAP__", json.dumps(redirects, ensure_ascii=False)))
     cname = os.path.join(ROOT, "CNAME")
