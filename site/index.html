@@ -784,7 +784,7 @@ function openEp(i){
   }
   d.querySelector(".epd-info").innerHTML=`<p class="ep-meta">${date} · ${Math.max(1,Math.round(dur/60))} ${esc(t("min"))}</p>
     <h2 id="epdTitle">${esc(title)}</h2>${desc?`<p>${esc(desc)}</p>`:""}
-    <audio controls preload="none" src="${audio}"></audio>
+    <audio controls controlsList="nodownload" preload="none" src="${audio}"></audio>
     <p class="epd-note" hidden>${esc(t("audioNote"))}</p>
     <div class="btns"><a class="btn" href="https://open.firstory.fm/story/${story}/platforms" target="_blank" rel="noopener">${ICONS.pod} ${esc(t("platforms"))}</a>
     ${yt?`<a class="btn" href="https://youtu.be/${yt}" target="_blank" rel="noopener">${ICONS.yt} ${esc(t("ytVersion"))}</a>`:""}
@@ -928,7 +928,7 @@ fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.e
 </script>
 <script>
 /* 保護圖片：擋右鍵、拖曳、長按存圖 */
-["contextmenu","dragstart"].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest("img,video,.lb-media,.epd-art,.tile"))e.preventDefault();},{capture:true}));
+["contextmenu","dragstart"].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest("img,video,audio,.lb-media,.epd-art,.tile"))e.preventDefault();},{capture:true}));
 </script>
 </body>
 </html>
