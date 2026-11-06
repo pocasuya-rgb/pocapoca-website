@@ -265,7 +265,7 @@ def write_share_page(e, gal):
     write_page(episode_hash(e)[1:], share_page_html(e, gal))
 
 
-RESERVED = {"img", "data", "fonts", "vid", "podcast插畫"}
+RESERVED = {"img", "data", "fonts", "vid", "podcast插畫", "calendar", "cal", "pod"}
 
 
 def write_old_link_page(slug, e, gal):
@@ -279,8 +279,9 @@ def write_old_link_page(slug, e, gal):
     write_page(os.path.join(*parts), share_page_html(e, gal))
 
 
-def write_sitemap(eps):
-    urls = [SITE_URL + "/"] + [f"{SITE_URL}/{episode_hash(e)[1:]}/" for e in eps]
+def write_sitemap(eps, cal=None):
+    urls = [SITE_URL + "/"] + ([SITE_URL + "/calendar/"] if cal and cal.get("open") else [])
+    urls += [f"{SITE_URL}/{episode_hash(e)[1:]}/" for e in eps]
     body = "".join(f"<url><loc>{html.escape(u)}</loc></url>\n" for u in dict.fromkeys(urls))
     with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -334,6 +335,63 @@ def write_about():
         print(f"About: {', '.join(data)}")
 
 
+CAL_DIR = os.path.join(ROOT, "桌曆")
+CAL_KEYS = {"開放預購": "open", "標題": "title", "介紹": "intro", "尺寸": "size", "價格": "price",
+            "運費": "ship", "免運本數": "freeQty", "截止日": "deadline", "出貨": "shipNote",
+            "送出後訊息": "thanks", "匯款銀行": "bank", "匯款帳號": "account", "戶名": "holder",
+            "店到店連結": "famiUrl", "店到店說明": "famiNote"}
+
+
+def write_calendar():
+    """Calendar pre-order page: settings from 桌曆/預購設定.txt, photos from 桌曆/照片/."""
+    path = os.path.join(CAL_DIR, "預購設定.txt")
+    if not os.path.exists(path):
+        return None
+    cal = {}
+    with open(path, encoding="utf-8-sig") as f:
+        for raw in f:
+            line = raw.strip()
+            if not line or line.startswith("//"):
+                continue
+            m = re.match(r"^([^：:]+)[：:]\s*(.*)$", line)
+            if m and m.group(1).strip() in CAL_KEYS:
+                cal[CAL_KEYS[m.group(1).strip()]] = m.group(2).strip()
+    state = cal.get("open", "是")
+    cal["soon"] = state in ("準備中", "即將開放")
+    cal["open"] = state in ("是", "開放", "yes", "Yes")
+    for k, d in (("price", 340), ("ship", 80), ("freeQty", 4)):
+        try:
+            cal[k] = int(re.sub(r"[^0-9]", "", str(cal.get(k, d))) or d)
+        except ValueError:
+            cal[k] = d
+    photos = []
+    src = os.path.join(CAL_DIR, "照片")
+    if os.path.isdir(src):
+        from PIL import Image, ImageOps
+        dst = os.path.join(OUT, "cal")
+        os.makedirs(dst, exist_ok=True)
+        files = sorted(f for f in os.listdir(src) if f.lower().endswith(IMG_EXT) and not f.startswith("."))
+        for i, f in enumerate(files, 1):
+            try:
+                im = to_srgb(ImageOps.exif_transpose(Image.open(os.path.join(src, f))))
+                im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
+                im.save(os.path.join(dst, f"{i:02d}.jpg"), quality=84, optimize=True, progressive=True)
+                photos.append({"src": f"cal/{i:02d}.jpg", "w": im.width, "h": im.height})
+            except Exception as exc:
+                print(f"  ! skipped 桌曆/照片/{f}: {exc}", file=sys.stderr)
+    cal["photos"] = photos
+    with open(os.path.join(OUT, "data", "calendar.json"), "w", encoding="utf-8") as f:
+        json.dump(cal, f, ensure_ascii=False)
+    img = SITE_URL + "/" + photos[0]["src"] if photos else SITE_URL + "/img/og.jpg"
+    title = cal.get("title", "插畫桌曆預購")
+    desc = cal.get("intro", "")[:150]
+    write_page("calendar", SHARE_PAGE.replace("__TITLE__", html.escape(title + "｜Pocapoca 故事村"))
+               .replace("__DESC__", html.escape(desc)).replace("__IMG__", html.escape(img))
+               .replace("__URL__", f"{SITE_URL}/calendar/").replace("__HASH__", f"{SITE_URL}/#calendar"))
+    print(f"Calendar: {'open' if cal['open'] else 'closed'}, {len(photos)} photos")
+    return cal
+
+
 def episode_hash(e):
     m = re.match(r"^EP\s*0*(\d+)", e["title"], re.I)
     return "#ep" + m.group(1) if m else "#ep" + e["date"].replace("-", "")
@@ -347,6 +405,7 @@ def main():
     os.makedirs(os.path.join(OUT, "data"), exist_ok=True)
 
     write_about()
+    cal = write_calendar()
     eps = parse_rss(fetch_rss(), overrides)
     rows, redirects = [], {}
     for e in eps:
@@ -364,7 +423,7 @@ def main():
 
     with open(os.path.join(OUT, "data", "podcast.json"), "w", encoding="utf-8") as f:
         json.dump({"episodes": rows}, f, ensure_ascii=False, separators=(",", ":"))
-    write_sitemap(eps)
+    write_sitemap(eps, cal)
     with open(os.path.join(OUT, "404.html"), "w", encoding="utf-8") as f:
         f.write(REDIRECT_PAGE.replace("__MAP__", json.dumps(redirects, ensure_ascii=False)))
     cname = os.path.join(ROOT, "CNAME")
