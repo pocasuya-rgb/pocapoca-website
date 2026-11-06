@@ -40,3 +40,5 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000   # 30 分鐘（網站圖片很多，上傳有時超過預設的 10 分鐘）
