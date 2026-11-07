@@ -5,8 +5,9 @@ on:
     branches: [main]
   schedule:
     - cron: "0 22 * * *"   # 06:00 台灣時間
-    - cron: "40 0 * * *"   # 08:40 台灣時間（新集數 08:30 上架後）
-    - cron: "15 1 * * *"   # 09:15 台灣時間（備用，以防 8:40 時 Firstory 還沒更新）
+    - cron: "32 0 * * *"   # 08:32 台灣時間（新集數 08:30 上架後馬上抓）
+    - cron: "45 0 * * *"   # 08:45 台灣時間（第二次，以防 8:32 時 Firstory 還沒更新）
+    - cron: "15 1 * * *"   # 09:15 台灣時間（備用）
   workflow_dispatch:
 
 permissions:
@@ -16,7 +17,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false   # 新的更新會排隊等前一個做完，不會把正在上傳的中斷
 
 jobs:
   build:
