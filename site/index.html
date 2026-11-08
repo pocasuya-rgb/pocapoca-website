@@ -274,7 +274,7 @@ dialog.epd .epd-close:hover{background:var(--teal);border-color:var(--teal)}
 dialog.epd.has-gal{width:min(1000px,calc(100vw - 32px))}
 .epd.has-gal .epd-in{grid-template-columns:minmax(0,1fr)}
 .epd.has-gal .epd-art{position:relative;background:#222}
-.epd.has-gal .epd-art img{aspect-ratio:auto;height:auto;max-height:62vh;object-fit:contain;margin:0 auto}
+.epd.has-gal .epd-art img,.epd.has-gal .epd-art video{aspect-ratio:auto;height:auto;max-height:62vh;object-fit:contain;margin:0 auto;display:block;max-width:100%}
 .epd.has-gal .epd-info{align-content:start}
 .gal-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(246,241,228,.92);color:var(--ribbon);font-size:1.2rem;cursor:pointer;display:grid;place-items:center}
 .gal-btn.prev{left:12px}.gal-btn.next{right:12px}
@@ -838,12 +838,15 @@ function openEp(i){
     let k=0;
     const art=d.querySelector(".epd-art");
     const med=u=>u.replace(/\.jpg$/,"-m.jpg");
-    const draw=()=>{art.innerHTML=`<img src="${med(gal[k])}" alt="${esc(title)} ${k+1}">
+    const isVid=u=>/\.mp4$/i.test(u);
+    /* videos are silent animations: always muted + looping, so the podcast audio keeps playing */
+    const media=u=>isVid(u)?`<video src="${u}" muted autoplay loop playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" preload="auto" aria-label="${esc(title)} ${k+1}"></video>`:`<img src="${med(u)}" alt="${esc(title)} ${k+1}">`;
+    const draw=()=>{art.innerHTML=`${media(gal[k])}
       ${gal.length>1?`<button class="gal-btn prev" type="button" aria-label="上一張" ${k===0?"disabled":""}>←</button><button class="gal-btn next" type="button" aria-label="下一張" ${k===gal.length-1?"disabled":""}>→</button>
       <span class="gal-count">${k+1} / ${gal.length}</span>`:""}<button class="epd-zoom" type="button" aria-label="全螢幕">⤢</button>`;
       const p=art.querySelector(".prev"),n=art.querySelector(".next");
       if(p)p.onclick=()=>{if(k>0){k--;draw();}}; if(n)n.onclick=()=>{if(k<gal.length-1){k++;draw();}};};
-    art.onclick=ev=>{if(ev.target.closest(".gal-btn"))return; LB_SETS.ep=gal.map((src,j)=>({src,zh:title,en:title}));lbSet="ep";lbI=k;showLB();lb.showModal();};
+    art.onclick=ev=>{if(ev.target.closest(".gal-btn"))return; LB_SETS.ep=gal.map((src,j)=>isVid(src)?{video:src,loop:true,thumb:"",zh:title,en:title,w:16,h:9}:{src,zh:title,en:title});lbSet="ep";lbI=k;showLB();lb.showModal();};
     draw();
     d.onkeydown=ev=>{if(ev.key==="ArrowLeft"&&k>0){k--;draw();} if(ev.key==="ArrowRight"&&k<gal.length-1){k++;draw();}};
     let sx=null; art.ontouchstart=ev=>{sx=ev.touches[0].clientX}; art.ontouchend=ev=>{if(sx==null)return;const dx=ev.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&k<gal.length-1)k++;else if(dx>0&&k>0)k--;draw();}sx=null;};

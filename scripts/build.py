@@ -34,6 +34,7 @@ POD_SRC = os.path.join(ROOT, "podcast插畫")
 RSS_URL = "https://feed.firstory.me/rss/user/cklabznee4z8p08728tgfauzn"
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 IMG_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
+VID_EXT = (".mp4",)  # short silent animations; shown muted and looping so they never interrupt the podcast
 MAX_SIDE = 2400      # full-screen viewer
 MID_SIDE = 1400      # inside the episode window
 
@@ -167,7 +168,7 @@ def copy_gallery(key):
     src = os.path.join(POD_SRC, key)
     if not os.path.isdir(src):
         return []
-    files = sorted(f for f in os.listdir(src) if f.lower().endswith(IMG_EXT) and not f.startswith("."))
+    files = sorted(f for f in os.listdir(src) if f.lower().endswith(IMG_EXT + VID_EXT) and not f.startswith("."))
     if not files:
         return []
     from PIL import Image, ImageOps
@@ -177,6 +178,12 @@ def copy_gallery(key):
     i = 0
     for f in files:
         try:
+            if f.lower().endswith(VID_EXT):
+                i += 1
+                name = f"{i:02d}.mp4"
+                shutil.copyfile(os.path.join(src, f), os.path.join(dst, name))
+                out.append(f"pod/{urllib.parse.quote(key)}/{name}")
+                continue
             im = Image.open(os.path.join(src, f))
             if is_blank(im):   # plain page background picked up from Wix, not an illustration
                 print(f"  - skipped blank background {key}/{f}")
@@ -240,8 +247,9 @@ SHARE_PAGE = """<!doctype html>
 
 def share_page_html(e, gal):
     h = episode_hash(e)[1:]
-    if gal:
-        img = SITE_URL + "/" + gal[0].replace(".jpg", "-m.jpg")
+    pics = [g for g in gal if g.endswith(".jpg")]
+    if pics:
+        img = SITE_URL + "/" + pics[0].replace(".jpg", "-m.jpg")
     else:
         img = e["cover"] or SITE_URL + "/img/og.jpg"
     desc = re.sub(r"\s+", " ", e["desc"] or "").strip() or "Pocapoca 故事村的 Podcast"
