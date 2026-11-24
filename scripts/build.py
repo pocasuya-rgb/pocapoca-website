@@ -365,6 +365,9 @@ def write_calendar():
             if m and m.group(1).strip() in CAL_KEYS:
                 cal[CAL_KEYS[m.group(1).strip()]] = m.group(2).strip()
     state = cal.get("open", "是")
+    if state in ("隱藏", "不顯示"):   # hide the whole pre-order page until next time
+        print("Calendar: hidden")
+        return None
     cal["soon"] = state in ("準備中", "即將開放")
     cal["open"] = state in ("是", "開放", "yes", "Yes")
     for k, d in (("price", 340), ("ship", 80), ("freeQty", 4)):

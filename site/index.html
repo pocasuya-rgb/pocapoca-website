@@ -1135,7 +1135,7 @@ fetch("data/about.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>
   }
   if(current==="about") render(true);
 }).catch(()=>{});
-fetch("data/calendar.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>{if(!d)return;CAL=d;if(!/^#ep/.test(location.hash))render(true);}).catch(()=>{});
+fetch("data/calendar.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>{if(!d){if(current==="calendar")location.hash="#home";return;}CAL=d;if(!/^#ep/.test(location.hash))render(true);}).catch(()=>{if(current==="calendar")location.hash="#home";});
 fetch("data/podcast.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{EPS=d.episodes||[];EPS_LOADED=true;if(current==="podcast")render(true);}).catch(()=>{EPS_LOADED=true;if(current==="podcast")render(true);});
 </script>
 <script>
